@@ -104,8 +104,6 @@
       font-weight: 400;
     }
 
-    /* NOMI DEGLI SPOSI */
-
     h1 {
       font-family: "Great Vibes", cursive;
       font-weight: 400;
@@ -136,8 +134,6 @@
       color: var(--gold-dark);
       margin: 0;
     }
-
-    /* CONTO ALLA ROVESCIA */
 
     .countdown {
       display: grid;
@@ -239,8 +235,6 @@
       font-size: 14px;
     }
 
-    /* ORARIO CERIMONIA */
-
     .ceremony-time {
       font-family: "Cormorant Garamond", serif;
       font-size: 29px;
@@ -260,6 +254,106 @@
       letter-spacing: 1px;
       text-transform: uppercase;
     }
+
+    /* CONFERMA PARTECIPAZIONE */
+
+    .rsvp-section {
+      background: #f4eddf;
+    }
+
+    .rsvp-intro {
+      max-width: 600px;
+      margin: 0 auto 28px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 25px;
+      line-height: 1.4;
+      color: var(--muted);
+    }
+
+    .rsvp-panel {
+      max-width: 660px;
+      margin: 0 auto;
+      padding: clamp(24px, 5vw, 46px);
+      background: var(--cream);
+      border: 1px solid var(--champagne);
+      outline: 1px solid var(--champagne);
+      outline-offset: -9px;
+    }
+
+    .rsvp-deadline {
+      color: var(--gold-dark);
+      font-size: 13px;
+      letter-spacing: 0.4px;
+      margin: 0 0 22px;
+    }
+
+    .rsvp-message {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .rsvp-group-name {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 33px;
+      font-weight: 500;
+      margin: 12px 0 24px;
+    }
+
+    .guest-card {
+      padding: 22px 10px;
+      border-top: 1px solid var(--champagne);
+    }
+
+    .guest-name {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 29px;
+      margin: 0 0 14px;
+    }
+
+    .rsvp-options {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .rsvp-button {
+      font-family: "DM Sans", sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.3px;
+      border: 1px solid var(--gold);
+      border-radius: 2px;
+      padding: 12px 18px;
+      background: transparent;
+      color: var(--gold-dark);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .rsvp-button:hover,
+    .rsvp-button.selected {
+      background: var(--gold-dark);
+      color: white;
+    }
+
+    .rsvp-button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    .guest-feedback {
+      min-height: 20px;
+      margin: 12px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .guest-feedback.error {
+      color: #a04436;
+    }
+
+    /* SEZIONE FINALE */
 
     .closing {
       position: relative;
@@ -318,14 +412,8 @@
 
     @media (max-width: 600px) {
       section { padding: 75px 20px; }
-
-      .details-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .invitation {
-        padding: 48px 20px;
-      }
+      .details-grid { grid-template-columns: 1fr; }
+      .invitation { padding: 48px 20px; }
 
       .floral-top-left {
         width: 105px;
@@ -534,6 +622,37 @@
       </div>
     </section>
 
+    <!-- RSVP -->
+
+    <section class="rsvp-section" id="rsvp">
+
+      <div class="flower" aria-hidden="true">❦</div>
+
+      <h2 class="section-title">
+        Conferma la tua presenza
+      </h2>
+
+      <p class="rsvp-intro">
+        Saremo felici di condividere con te
+        questo giorno così speciale.
+      </p>
+
+      <div class="rsvp-panel">
+
+        <p class="rsvp-deadline">
+          Ti chiediamo di rispondere entro il 1° marzo 2027.
+        </p>
+
+        <div id="rsvp-content" aria-live="polite">
+          <p class="rsvp-message">
+            Per confermare la tua presenza,
+            accedi tramite il QR code del tuo invito personale.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
     <!-- MESSAGGIO FINALE -->
 
     <section class="closing">
@@ -574,9 +693,9 @@
     Daniele &amp; Francesca · 15.05.2027
   </footer>
 
-  <!-- CONTO ALLA ROVESCIA FINO ALLE ORE 16:00 -->
-
   <script>
+    /* CONTO ALLA ROVESCIA */
+
     const weddingDate = new Date("2027-05-15T16:00:00+02:00");
 
     function updateCountdown() {
@@ -601,6 +720,226 @@
 
     updateCountdown();
     setInterval(updateCountdown, 1000);
+
+    /* RSVP PERSONALIZZATO */
+
+    const supabaseFunctions =
+      "https://odvbiesoqngieuexoxsl.supabase.co/functions/v1";
+
+    const rsvpContent = document.getElementById("rsvp-content");
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const invitationToken =
+      urlParams.get("invito") || urlParams.get("token");
+
+    let invitationData = null;
+
+    function showRsvpMessage(message) {
+      const paragraph = document.createElement("p");
+      paragraph.className = "rsvp-message";
+      paragraph.textContent = message;
+
+      rsvpContent.replaceChildren(paragraph);
+    }
+
+    async function callWeddingFunction(name, payload) {
+      const response = await fetch(
+        supabaseFunctions + "/" + name,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Si è verificato un errore."
+        );
+      }
+
+      return data;
+    }
+
+    function createElement(tag, className, text) {
+      const element = document.createElement(tag);
+
+      if (className) {
+        element.className = className;
+      }
+
+      if (text !== undefined) {
+        element.textContent = text;
+      }
+
+      return element;
+    }
+
+    function renderInvitation() {
+      if (!invitationData) return;
+
+      rsvpContent.replaceChildren();
+
+      const groupTitle = createElement(
+        "h3",
+        "rsvp-group-name",
+        invitationData.group_name
+      );
+
+      rsvpContent.appendChild(groupTitle);
+
+      if (!invitationData.guests.length) {
+        rsvpContent.appendChild(
+          createElement(
+            "p",
+            "rsvp-message",
+            "Non ci sono ancora invitati associati a questo invito."
+          )
+        );
+        return;
+      }
+
+      if (!invitationData.rsvp_open) {
+        rsvpContent.appendChild(
+          createElement(
+            "p",
+            "rsvp-message",
+            "Il termine per confermare la partecipazione è scaduto. Le risposte già inviate sono riportate qui sotto."
+          )
+        );
+      }
+
+      invitationData.guests.forEach((guest) => {
+        const card = createElement("div", "guest-card");
+
+        const name = createElement(
+          "h4",
+          "guest-name",
+          guest.full_name
+        );
+
+        const options = createElement("div", "rsvp-options");
+
+        const feedback = createElement(
+          "p",
+          "guest-feedback",
+          ""
+        );
+
+        const attending = createElement(
+          "button",
+          "rsvp-button",
+          "Parteciperò"
+        );
+
+        const declining = createElement(
+          "button",
+          "rsvp-button",
+          "Non parteciperò"
+        );
+
+        attending.type = "button";
+        declining.type = "button";
+
+        function refreshButtons() {
+          attending.classList.toggle(
+            "selected",
+            guest.rsvp_status === "confirmed"
+          );
+
+          declining.classList.toggle(
+            "selected",
+            guest.rsvp_status === "declined"
+          );
+
+          attending.setAttribute(
+            "aria-pressed",
+            String(guest.rsvp_status === "confirmed")
+          );
+
+          declining.setAttribute(
+            "aria-pressed",
+            String(guest.rsvp_status === "declined")
+          );
+        }
+
+        async function saveAnswer(status) {
+          attending.disabled = true;
+          declining.disabled = true;
+
+          feedback.className = "guest-feedback";
+          feedback.textContent = "Salvataggio in corso...";
+
+          try {
+            const result = await callWeddingFunction(
+              "wedding-rsvp",
+              {
+                token: invitationToken,
+                guest_id: guest.id,
+                rsvp_status: status
+              }
+            );
+
+            guest.rsvp_status = result.guest.rsvp_status;
+
+            refreshButtons();
+
+            feedback.textContent =
+              "Risposta salvata correttamente.";
+          } catch (error) {
+            feedback.className = "guest-feedback error";
+            feedback.textContent =
+              error.message || "Impossibile salvare la risposta.";
+          } finally {
+            attending.disabled = !invitationData.rsvp_open;
+            declining.disabled = !invitationData.rsvp_open;
+          }
+        }
+
+        attending.addEventListener("click", () => {
+          saveAnswer("confirmed");
+        });
+
+        declining.addEventListener("click", () => {
+          saveAnswer("declined");
+        });
+
+        attending.disabled = !invitationData.rsvp_open;
+        declining.disabled = !invitationData.rsvp_open;
+
+        refreshButtons();
+
+        options.append(attending, declining);
+        card.append(name, options, feedback);
+        rsvpContent.appendChild(card);
+      });
+    }
+
+    async function loadInvitation() {
+      if (!invitationToken) return;
+
+      showRsvpMessage("Caricamento del tuo invito...");
+
+      try {
+        invitationData = await callWeddingFunction(
+          "wedding-invitation",
+          { token: invitationToken }
+        );
+
+        renderInvitation();
+      } catch (error) {
+        showRsvpMessage(
+          "Non è stato possibile caricare l'invito. " +
+          (error.message || "Riprova più tardi.")
+        );
+      }
+    }
+
+    loadInvitation();
   </script>
 
 </body>
