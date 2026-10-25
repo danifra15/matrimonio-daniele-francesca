@@ -198,7 +198,7 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       max-width: 1050px;
       gap: 25px;
-      margin: 45px auto 0;
+      margin: 20px auto 0;
       align-items: stretch;
     }
 
@@ -265,15 +265,15 @@
     }
 
     .closing-floral-left {
-      width: clamp(110px, 18vw, 225px);
-      bottom: -30px;
-      left: -30px;
+      width: clamp(100px, 18vw, 190px);
+      top: 15px;
+      left: 15px;
     }
 
     .closing-floral-right {
-      width: clamp(110px, 18vw, 225px);
-      bottom: -30px;
-      right: -30px;
+      width: clamp(110px, 18vw, 190px);
+      bottom: 15px;
+      right: 15px;
     }
 
     .closing-message {
@@ -299,7 +299,9 @@
     }
 
     @media (max-width: 600px) {
-      section { padding: 75px 20px; }
+      section {
+        padding: 75px 20px;
+      }
 
       .details-grid {
         grid-template-columns: 1fr;
@@ -349,16 +351,18 @@
 
       .closing-floral-left,
       .closing-floral-right {
-        width: 115px;
-        bottom: -15px;
+        width: 100px;
       }
 
       .closing-floral-left {
-        left: -20px;
+        top: 12px;
+        left: 8px;
+        bottom: auto;
       }
 
       .closing-floral-right {
-        right: -20px;
+        right: 8px;
+        bottom: 12px;
       }
     }
 
@@ -524,8 +528,6 @@
       >
 
       <div class="closing-content">
-        <div class="eyebrow">Daniele &amp; Francesca</div>
-
         <h2 class="section-title">Non vediamo l'ora!</h2>
 
         <p class="closing-message">
