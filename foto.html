@@ -22,7 +22,9 @@
       --line: #e7ddc9;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -430,9 +432,8 @@
       </p>
     </header>
 
-    <div class="demo-banner">
-      Modalità anteprima: puoi provare la selezione dei file.
-      Nessuna fotografia o video viene ancora caricato online.
+    <div class="demo-banner" id="statusBanner">
+      Verifica dell'accesso all'album...
     </div>
 
     <section class="section" id="carica">
@@ -460,7 +461,7 @@
         <input
           id="fileInput"
           type="file"
-          accept="image/*,video/*"
+          accept="image/jpeg,image/png,image/webp,image/heic,image/heif,video/mp4,video/quicktime"
           multiple
           hidden
         >
@@ -475,6 +476,7 @@
           <div class="camera-icon">📷</div>
           <strong>Aggiungi foto e video</strong>
           <p>Seleziona i ricordi dalla galleria del telefono</p>
+
           <button
             type="button"
             class="button secondary choose-button"
@@ -485,13 +487,15 @@
         </div>
 
         <p class="note">
-          I file originali saranno conservati senza compressione
+          I file originali vengono conservati senza compressione
           o ridimensionamento.
+          Durante i test il limite è di 45 MB per file.
         </p>
 
         <div id="previewArea" hidden>
           <div class="preview-header">
             <span id="fileCount">0 file selezionati</span>
+
             <button
               type="button"
               class="button secondary"
@@ -530,7 +534,8 @@
         <strong>Qui nasceranno i nostri ricordi</strong>
         <p>
           Le fotografie e i video condivisi dagli invitati
-          appariranno in questa galleria.
+          appariranno in questa galleria quando
+          attiveremo la visualizzazione online.
         </p>
       </div>
 
@@ -545,6 +550,15 @@
   </main>
 
   <script>
+    const API =
+      "https://odvbiesoqngieuexoxsl.supabase.co/functions/v1/wedding-album";
+
+    const STORAGE =
+      "https://odvbiesoqngieuexoxsl.supabase.co/storage/v1";
+
+    const accessCode =
+      new URLSearchParams(location.search).get("codice");
+
     const fileInput = document.getElementById("fileInput");
     const dropZone = document.getElementById("dropZone");
     const chooseButton = document.getElementById("chooseButton");
@@ -554,11 +568,83 @@
     const clearButton = document.getElementById("clearButton");
     const uploadButton = document.getElementById("uploadButton");
     const message = document.getElementById("message");
+    const statusBanner = document.getElementById("statusBanner");
 
     let selectedFiles = [];
+    let uploading = false;
+    let accessGranted = false;
+
+    async function request(action, extra = {}) {
+      const response = await fetch(API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action,
+          token: accessCode,
+          ...extra
+        })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.error || "Errore di connessione"
+        );
+      }
+
+      return result;
+    }
+
+    async function checkAccess() {
+      if (!accessCode) {
+        lockAlbum(
+          "Per accedere all'album utilizza il link riservato."
+        );
+        return;
+      }
+
+      try {
+        const status = await request("status");
+
+        if (!status.open) {
+          lockAlbum("L'album è temporaneamente chiuso.");
+          return;
+        }
+
+        accessGranted = true;
+
+        statusBanner.textContent =
+          "Album aperto in modalità test. " +
+          "I caricamenti vengono salvati realmente su Supabase.";
+
+      } catch (error) {
+        lockAlbum(
+          "Link non valido o accesso non disponibile."
+        );
+      }
+    }
+
+    function lockAlbum(text) {
+      accessGranted = false;
+      dropZone.style.display = "none";
+
+      document.getElementById("guestName").disabled = true;
+
+      previewArea.hidden = true;
+      statusBanner.textContent = text;
+      message.textContent = text;
+
+      document.getElementById("emptyGallery").style.display =
+        "none";
+    }
 
     function openPicker() {
-      fileInput.click();
+      if (!uploading && accessGranted) {
+        fileInput.click();
+      }
     }
 
     chooseButton.addEventListener("click", event => {
@@ -570,6 +656,7 @@
 
     dropZone.addEventListener("keydown", event => {
       if (event.target !== dropZone) return;
+
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
         openPicker();
@@ -596,22 +683,34 @@
       addFiles(Array.from(event.dataTransfer.files));
     });
 
-    function isSupported(file) {
-      return file.type.startsWith("image/") ||
-             file.type.startsWith("video/");
-    }
-
     function addFiles(files) {
-      const validFiles = files.filter(isSupported);
+      if (uploading || !accessGranted) return;
 
-      if (validFiles.length !== files.length) {
+      const supported = [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "image/heic",
+        "image/heif",
+        "video/mp4",
+        "video/quicktime"
+      ];
+
+      const valid = files.filter(file =>
+        supported.includes(file.type) &&
+        file.size <= 45000000 &&
+        file.size > 0
+      );
+
+      if (valid.length !== files.length) {
         message.textContent =
-          "Alcuni file non sono fotografie o video supportati.";
+          "Alcuni file non sono supportati o superano " +
+          "45 MB. Questo è il limite temporaneo dei test.";
       } else {
         message.textContent = "";
       }
 
-      selectedFiles.push(...validFiles);
+      selectedFiles.push(...valid);
       renderPreviews();
     }
 
@@ -619,6 +718,7 @@
       previewGrid.innerHTML = "";
 
       previewArea.hidden = selectedFiles.length === 0;
+
       fileCount.textContent =
         selectedFiles.length + " file selezionati";
 
@@ -626,13 +726,13 @@
         const card = document.createElement("div");
         card.className = "media-card";
 
-        const url = URL.createObjectURL(file);
         const isVideo = file.type.startsWith("video/");
 
         const media = document.createElement(
           isVideo ? "video" : "img"
         );
 
+        const url = URL.createObjectURL(file);
         media.src = url;
 
         if (isVideo) {
@@ -654,12 +754,15 @@
         remove.className = "remove-preview";
         remove.type = "button";
         remove.textContent = "×";
+
         remove.setAttribute(
           "aria-label",
-          "Rimuovi " + file.name + " dalla selezione"
+          "Rimuovi " + file.name
         );
 
         remove.addEventListener("click", () => {
+          if (uploading) return;
+
           selectedFiles.splice(index, 1);
           renderPreviews();
         });
@@ -670,27 +773,98 @@
     }
 
     clearButton.addEventListener("click", () => {
+      if (uploading) return;
+
       selectedFiles = [];
       previewGrid.innerHTML = "";
       previewArea.hidden = true;
       message.textContent = "";
     });
 
-    uploadButton.addEventListener("click", () => {
-      message.textContent =
-        "La selezione funziona! Il caricamento online " +
-        "sarà attivato dopo il collegamento a Supabase.";
+    async function uploadFile(file, name) {
+      const prepared = await request("prepare", {
+        filename: file.name,
+        mime: file.type,
+        size: file.size,
+        name: name
+      });
+
+      const uploadUrl =
+        STORAGE +
+        "/object/upload/sign/wedding-originals/" +
+        encodeURIComponent(prepared.path) +
+        "?token=" +
+        encodeURIComponent(prepared.token);
+
+      const response = await fetch(uploadUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": file.type,
+          "x-upsert": "false"
+        },
+        body: file
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          "Caricamento non riuscito: " + file.name
+        );
+      }
+
+      await request("complete", {
+        id: prepared.id
+      });
+    }
+
+    uploadButton.addEventListener("click", async () => {
+      if (
+        uploading ||
+        !accessGranted ||
+        selectedFiles.length === 0
+      ) {
+        return;
+      }
+
+      uploading = true;
+      uploadButton.disabled = true;
+      clearButton.disabled = true;
+
+      const name =
+        document.getElementById("guestName").value.trim();
+
+      const files = [...selectedFiles];
+      const failed = [];
+
+      for (let i = 0; i < files.length; i++) {
+        message.textContent =
+          "Caricamento " +
+          (i + 1) +
+          " di " +
+          files.length +
+          "...";
+
+        try {
+          await uploadFile(files[i], name);
+        } catch (error) {
+          console.error(error);
+          failed.push(files[i]);
+        }
+      }
+
+      selectedFiles = failed;
+      renderPreviews();
+
+      message.textContent = failed.length === 0
+        ? "Ricordi caricati con successo! Grazie ♡"
+        : "Alcuni caricamenti non sono riusciti. " +
+          "Puoi riprovare con i file rimasti.";
+
+      uploading = false;
+      uploadButton.disabled = false;
+      clearButton.disabled = false;
     });
 
-    window.addEventListener("pagehide", () => {
-      document.querySelectorAll(
-        ".preview-grid img, .preview-grid video"
-      ).forEach(media => {
-        if (media.src.startsWith("blob:")) {
-          URL.revokeObjectURL(media.src);
-        }
-      });
-    });
+    checkAccess();
   </script>
 </body>
 </html>
