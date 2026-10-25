@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f8f5ee">
+  <title>Daniele & Francesca | Il nostro matrimonio</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ivory: #f8f5ee;
+      --cream: #fffdf9;
+      --sage: #788675;
+      --gold: #aa9065;
+      --ink: #403f39;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--ivory);
+      color: var(--ink);
+      font-family: "DM Sans", sans-serif;
+    }
+
+    .hero {
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+      background:
+        radial-gradient(ellipse at 15% 20%, #e5e9dc 0%, transparent 45%),
+        radial-gradient(ellipse at 85% 85%, #eee3d2 0%, transparent 45%),
+        var(--ivory);
+    }
+
+    .invitation {
+      width: min(100%, 740px);
+      padding: clamp(42px, 8vw, 90px) 24px;
+      border: 1px solid #d9c9ad;
+      outline: 1px solid #d9c9ad;
+      outline-offset: -10px;
+      background: rgba(255, 253, 249, 0.75);
+      text-align: center;
+      box-shadow: 0 20px 65px rgba(71, 66, 52, 0.06);
+      animation: appear 1.2s ease both;
+    }
+
+    .ornament {
+      color: var(--sage);
+      font-size: 29px;
+      letter-spacing: 12px;
+      margin-bottom: 30px;
+    }
+
+    .eyebrow {
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      font-size: 11px;
+      line-height: 2;
+    }
+
+    h1, h2 {
+      font-family: "Cormorant Garamond", serif;
+      font-weight: 400;
+    }
+
+    h1 {
+      font-size: clamp(66px, 12vw, 112px);
+      line-height: 0.92;
+      margin: 34px 0;
+    }
+
+    h1 span {
+      display: block;
+      color: var(--gold);
+      font-size: 0.55em;
+      font-style: italic;
+      margin: 15px 0;
+    }
+
+    .line {
+      width: 90px;
+      height: 1px;
+      background: var(--gold);
+      margin: 35px auto;
+    }
+
+    .message {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(23px, 4vw, 31px);
+      font-style: italic;
+      line-height: 1.3;
+    }
+
+    .details {
+      color: var(--sage);
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 30px;
+    }
+
+    .scroll {
+      display: inline-block;
+      margin-top: 38px;
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    section.info {
+      text-align: center;
+      padding: 100px 20px;
+      background: var(--cream);
+    }
+
+    section.info h2 {
+      font-size: clamp(40px, 7vw, 64px);
+      margin: 0 0 15px;
+    }
+
+    section.info p {
+      max-width: 550px;
+      margin: 0 auto;
+      line-height: 1.9;
+      color: #73736a;
+    }
+
+    footer {
+      text-align: center;
+      padding: 35px 20px;
+      color: var(--sage);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 23px;
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <header class="hero">
+      <div class="invitation">
+        <div class="ornament" aria-hidden="true">❦</div>
+
+        <div class="eyebrow">Con immensa gioia</div>
+
+        <h1>
+          Daniele
+          <span>&amp;</span>
+          Francesca
+        </h1>
+
+        <div class="line"></div>
+
+        <p class="message">
+          Due cuori, una promessa,<br>
+          una vita da condividere.
+        </p>
+
+        <div class="details">
+          Il nostro giorno speciale
+        </div>
+
+        <a class="scroll" href="#storia">
+          Scopri di più ↓
+        </a>
+      </div>
+    </header>
+
+    <section class="info" id="storia">
+      <div class="eyebrow">Il nostro matrimonio</div>
+      <h2>La nostra storia continua...</h2>
+      <p>
+        Stiamo preparando un giorno indimenticabile
+        da condividere con le persone che amiamo.
+        Presto troverete qui tutti i dettagli
+        della cerimonia e del ricevimento.
+      </p>
+    </section>
+  </main>
+
+  <footer>Daniele &amp; Francesca ❦</footer>
+</body>
+</html>
