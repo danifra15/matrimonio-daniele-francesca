@@ -15,6 +15,8 @@
   --ivory:#faf7f0;
   --line:#e7dcc7;
   --muted:#857b6c;
+  --green:#39744d;
+  --red:#a24b48;
 }
 *{box-sizing:border-box}
 body{
@@ -39,7 +41,7 @@ header small{
   font-size:10px;
 }
 main{
-  max-width:1100px;
+  max-width:1150px;
   margin:35px auto;
   padding:0 18px 60px;
 }
@@ -49,6 +51,7 @@ h1,h2,h3{
 }
 h1{font-size:40px;margin:0 0 12px}
 h2{font-size:30px;margin:0 0 16px}
+h3{font-size:27px;margin:0}
 .panel{
   background:white;
   border:1px solid var(--line);
@@ -83,7 +86,7 @@ input,select{
   padding:12px;
   border:1px solid #d9ccb6;
   border-radius:8px;
-  background:#fff;
+  background:white;
   font:inherit;
   color:var(--dark);
 }
@@ -97,7 +100,7 @@ button{
   cursor:pointer;
 }
 button.secondary{background:#f2ece1;color:var(--dark)}
-button.danger{background:#a24b48}
+button.danger{background:var(--red)}
 button:disabled{opacity:.5;cursor:wait}
 .muted{color:var(--muted);font-size:13px}
 .hidden{display:none!important}
@@ -107,7 +110,7 @@ button:disabled{opacity:.5;cursor:wait}
   gap:12px;
 }
 .stat{
-  background:#fff;
+  background:white;
   border:1px solid var(--line);
   border-radius:12px;
   padding:18px;
@@ -117,12 +120,49 @@ button:disabled{opacity:.5;cursor:wait}
   display:block;
 }
 .stat span{font-size:12px;color:var(--muted)}
+.toolbar{
+  display:grid;
+  grid-template-columns:minmax(220px,2fr) minmax(170px,1fr) auto auto;
+  gap:10px;
+  align-items:end;
+}
+.toolbar .field{margin:0}
 .family{
   border-top:1px solid var(--line);
-  padding:20px 0;
+  padding:18px 0;
 }
-.family:first-of-type{border-top:0}
-.family h3{font-size:27px;margin:0}
+.family:first-child{border-top:0}
+.family-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.family-title{
+  background:none;
+  color:var(--dark);
+  padding:0;
+  text-align:left;
+  font:600 27px 'Cormorant Garamond',serif;
+}
+.family-title:hover{color:var(--gold)}
+.family-details{padding-top:14px}
+.family-summary{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:9px 0;
+}
+.pill{
+  padding:5px 9px;
+  background:#f5f0e7;
+  border-radius:100px;
+  font-size:11px;
+}
+.pill.yes{background:#e8f3e9;color:var(--green)}
+.pill.no{background:#f8e9e7;color:var(--red)}
+.pill.wait{background:#f5f0e7;color:#866b38}
 .guest{
   display:grid;
   grid-template-columns:minmax(150px,1fr) minmax(155px,210px) auto;
@@ -131,7 +171,6 @@ button:disabled{opacity:.5;cursor:wait}
   padding:10px 0;
   border-bottom:1px solid #f0ebe3;
 }
-.guest:last-child{border:0}
 .guest .name{font-weight:600}
 .actions{display:flex;gap:6px;flex-wrap:wrap}
 .actions button{padding:9px 10px}
@@ -141,11 +180,19 @@ button:disabled{opacity:.5;cursor:wait}
   margin-top:12px;
 }
 .error{color:#a13d3d}
-.success{color:#39744d}
-
+.success{color:var(--green)}
+.empty{
+  text-align:center;
+  padding:30px 12px;
+  color:var(--muted);
+}
+@media(max-width:800px){
+  .toolbar{grid-template-columns:1fr 1fr}
+}
 @media(max-width:700px){
   .stats{grid-template-columns:repeat(2,1fr)}
   .guest{grid-template-columns:1fr}
+  .toolbar{grid-template-columns:1fr}
   .panel{padding:18px}
   h1{font-size:34px}
 }
@@ -162,9 +209,7 @@ button:disabled{opacity:.5;cursor:wait}
 
 <section id="login" class="panel narrow">
   <h1>Accesso riservato</h1>
-  <p class="muted">
-    Solo gli amministratori autorizzati possono gestire gli inviti.
-  </p>
+  <p class="muted">Gestione degli inviti riservata agli amministratori.</p>
 
   <form id="loginForm">
     <div class="field">
@@ -186,9 +231,7 @@ button:disabled{opacity:.5;cursor:wait}
   <div class="row space">
     <div>
       <h1>Pannello amministrativo</h1>
-      <p class="muted">
-        Famiglie, invitati e conferme in un unico posto.
-      </p>
+      <p class="muted">Famiglie, invitati e conferme RSVP.</p>
     </div>
     <button id="logout" class="secondary">Esci</button>
   </div>
@@ -214,22 +257,17 @@ button:disabled{opacity:.5;cursor:wait}
 
   <div class="panel">
     <h2>Crea una famiglia o un gruppo</h2>
-
     <form id="groupForm" class="row">
       <div class="field">
-        <label for="groupName">Nome scelto da voi</label>
+        <label for="groupName">Nome del gruppo</label>
         <input id="groupName" required maxlength="100"
-               placeholder="Es. Amici di Daniele">
+               placeholder="Es. Famiglia Rossi">
       </div>
-
       <div class="field">
-        <label for="groupDisplay">
-          Nome mostrato nell'invito (facoltativo)
-        </label>
+        <label for="groupDisplay">Nome mostrato nell'invito</label>
         <input id="groupDisplay" maxlength="100"
-               placeholder="Es. Carissimi amici">
+               placeholder="Facoltativo">
       </div>
-
       <button type="submit">Crea gruppo</button>
     </form>
   </div>
@@ -237,27 +275,51 @@ button:disabled{opacity:.5;cursor:wait}
   <div class="panel">
     <div class="row space">
       <h2>Famiglie e invitati</h2>
-      <button id="refresh" class="secondary">Aggiorna</button>
+      <span class="muted" id="resultCount"></span>
+    </div>
+
+    <div class="toolbar">
+      <div class="field">
+        <label for="search">Cerca famiglia o invitato</label>
+        <input id="search" type="search"
+               placeholder="Scrivi un nome…">
+      </div>
+
+      <div class="field">
+        <label for="filter">Filtra risposte</label>
+        <select id="filter">
+          <option value="all">Tutti gli invitati</option>
+          <option value="confirmed">Confermati</option>
+          <option value="declined">Non parteciperanno</option>
+          <option value="pending">In attesa</option>
+        </select>
+      </div>
+
+      <button id="exportCsv" class="secondary">
+        Esporta CSV
+      </button>
+
+      <button id="refresh" class="secondary">
+        Aggiorna
+      </button>
     </div>
 
     <p id="globalMsg" class="message" role="status"></p>
     <div id="families"></div>
   </div>
-
 </section>
+
 </main>
 
 <script type="module">
 import {createClient} from
 'https://esm.sh/@supabase/supabase-js@2.57.0';
 
-const URL='https://odvbiesoqngieuexoxsl.supabase.co';
+const SUPABASE_URL='https://odvbiesoqngieuexoxsl.supabase.co';
 const KEY='sb_publishable_83z0XdS72Vv-JOJU2EO6Ww_U47Vu64o';
+const SITE='https://danifra15.github.io/matrimonio-daniele-francesca/';
 
-const SITE=
-'https://danifra15.github.io/matrimonio-daniele-francesca/';
-
-const db=createClient(URL,KEY,{
+const db=createClient(SUPABASE_URL,KEY,{
   auth:{
     persistSession:true,
     autoRefreshToken:true,
@@ -270,6 +332,7 @@ const $=id=>document.getElementById(id);
 let groups=[];
 let guests=[];
 let active=false;
+const expanded=new Set();
 
 function msg(id,text,error=false){
   const el=$(id);
@@ -283,17 +346,14 @@ function err(e){
 
 async function checkAdmin(){
   const {data:{user},error}=await db.auth.getUser();
-
   if(error||!user)return false;
 
-  const q=await db
-    .from('wedding_admins')
+  const q=await db.from('wedding_admins')
     .select('user_id')
     .eq('user_id',user.id)
     .maybeSingle();
 
   if(q.error)throw q.error;
-
   return !!q.data;
 }
 
@@ -311,18 +371,15 @@ async function enter(){
     active=true;
     $('login').classList.add('hidden');
     $('dashboard').classList.remove('hidden');
-
     await load();
 
   }catch(e){
-    msg('loginMsg',
-      'Impossibile verificare i permessi: '+err(e),true);
+    msg('loginMsg','Errore permessi: '+err(e),true);
   }
 }
 
 async function load(){
   if(!active)return;
-
   msg('globalMsg','Caricamento…');
 
   const [g,p]=await Promise.all([
@@ -351,9 +408,7 @@ async function load(){
   $('pending').textContent=
     guests.filter(x=>x.rsvp_status==='pending').length;
 
-  msg('globalMsg',
-    groups.length?'Dati aggiornati.':'Nessuna famiglia inserita.');
-
+  msg('globalMsg','Dati aggiornati.');
   render();
 }
 
@@ -405,16 +460,91 @@ async function perform(fn){
   }
 }
 
+function summary(list){
+  return {
+    confirmed:list.filter(x=>x.rsvp_status==='confirmed').length,
+    declined:list.filter(x=>x.rsvp_status==='declined').length,
+    pending:list.filter(x=>x.rsvp_status==='pending').length
+  };
+}
+
+function addPill(container,text,cls){
+  container.append(node('span',text,'pill '+cls));
+}
+
 function render(){
   const root=$('families');
   root.replaceChildren();
 
+  const query=$('search').value.trim().toLocaleLowerCase('it');
+  const filter=$('filter').value;
+
+  let visibleFamilies=0;
+  let visibleGuests=0;
+
   for(const group of groups){
+    const familyGuests=guests.filter(g=>g.group_id===group.id);
+
+    const nameMatches=
+      group.name.toLocaleLowerCase('it').includes(query)||
+      (group.display_name||'')
+        .toLocaleLowerCase('it').includes(query);
+
+    const matchingGuests=familyGuests.filter(g=>{
+      const textMatch=
+        !query||
+        nameMatches||
+        g.full_name.toLocaleLowerCase('it').includes(query);
+
+      const statusMatch=
+        filter==='all'||g.rsvp_status===filter;
+
+      return textMatch&&statusMatch;
+    });
+
+    const showFamily=
+      (query===''&&filter==='all')||
+      matchingGuests.length>0||
+      (filter==='all'&&nameMatches);
+
+    if(!showFamily)continue;
+
+    visibleFamilies++;
+    visibleGuests+=matchingGuests.length;
 
     const box=node('section',undefined,'family');
-    const head=node('div',undefined,'row space');
-    const title=node('h3',group.name);
-    head.append(title);
+    const head=node('div',undefined,'family-top');
+    const left=node('div');
+
+    const isExpanded=
+      expanded.has(group.id)||query!==''||filter!=='all';
+
+    const title=btn(
+      (isExpanded?'▾ ':'▸ ')+group.name,
+      ()=>{
+        if(expanded.has(group.id)){
+          expanded.delete(group.id);
+        }else{
+          expanded.add(group.id);
+        }
+        render();
+      },
+      'family-title'
+    );
+
+    title.setAttribute('aria-expanded',String(isExpanded));
+    left.append(title);
+
+    const counts=summary(familyGuests);
+    const pills=node('div',undefined,'family-summary');
+
+    addPill(pills,familyGuests.length+' invitati','');
+    addPill(pills,counts.confirmed+' confermati','yes');
+    addPill(pills,counts.declined+' assenti','no');
+    addPill(pills,counts.pending+' in attesa','wait');
+
+    left.append(pills);
+    head.append(left);
 
     const ops=node('div',undefined,'actions');
 
@@ -449,146 +579,213 @@ function render(){
     head.append(ops);
     box.append(head);
 
-    const familyGuests=guests.filter(g=>g.group_id===group.id);
+    if(isExpanded){
+      const details=node('div',undefined,'family-details');
 
-    box.append(node('p',
-      familyGuests.length+' invitati · '+
-      (group.display_name||'Nome invito: '+group.name),
-      'muted'
-    ));
+      details.append(node('p',
+        'Nome mostrato nell’invito: '+
+        (group.display_name||group.name),
+        'muted'
+      ));
 
-    for(const guest of familyGuests){
+      if(matchingGuests.length===0){
+        details.append(node('p',
+          'Nessun invitato corrisponde ai filtri.',
+          'muted'
+        ));
+      }
 
-      const line=node('div',undefined,'guest');
-      line.append(node('span',guest.full_name,'name'));
+      for(const guest of matchingGuests){
+        const line=node('div',undefined,'guest');
+        line.append(node('span',guest.full_name,'name'));
 
-      const status=select([
-        ['pending','In attesa di risposta'],
-        ['confirmed','Confermato'],
-        ['declined','Non parteciperà']
-      ],guest.rsvp_status);
+        const status=select([
+          ['pending','In attesa di risposta'],
+          ['confirmed','Confermato'],
+          ['declined','Non parteciperà']
+        ],guest.rsvp_status);
 
-      status.setAttribute('aria-label',
-        'Stato RSVP di '+guest.full_name);
+        status.setAttribute('aria-label',
+          'Stato RSVP di '+guest.full_name);
 
-      status.addEventListener('change',()=>perform(async()=>{
-        const {error}=await db.from('wedding_guests')
-          .update({rsvp_status:status.value})
-          .eq('id',guest.id);
-
-        if(error)throw error;
-      }));
-
-      line.append(status);
-
-      const controls=node('div',undefined,'actions');
-
-      controls.append(btn('Modifica',async()=>{
-        const name=prompt('Nome invitato:',guest.full_name);
-        if(name===null||!name.trim())return;
-
-        await perform(async()=>{
+        status.addEventListener('change',()=>perform(async()=>{
           const {error}=await db.from('wedding_guests')
-            .update({full_name:name.trim()})
+            .update({rsvp_status:status.value})
             .eq('id',guest.id);
 
           if(error)throw error;
-        });
-      }));
+        }));
 
-      controls.append(btn('Sposta',async()=>{
-        const other=groups.filter(x=>x.id!==group.id);
+        line.append(status);
 
-        if(!other.length){
-          return alert('Crea prima un altro gruppo.');
-        }
+        const controls=node('div',undefined,'actions');
 
-        const target=prompt(
-          'Sposta in quale gruppo?\n'+
-          other.map((x,i)=>(i+1)+'. '+x.name).join('\n')+
-          '\nInserisci il numero:'
-        );
+        controls.append(btn('Modifica',async()=>{
+          const name=prompt('Nome invitato:',guest.full_name);
+          if(name===null||!name.trim())return;
 
-        if(target===null)return;
+          await perform(async()=>{
+            const {error}=await db.from('wedding_guests')
+              .update({full_name:name.trim()})
+              .eq('id',guest.id);
 
-        const chosen=other[Number(target)-1];
+            if(error)throw error;
+          });
+        }));
 
-        if(!chosen)return alert('Numero non valido.');
+        controls.append(btn('Sposta',async()=>{
+          const other=groups.filter(x=>x.id!==group.id);
 
-        await perform(async()=>{
+          if(!other.length){
+            return alert('Crea prima un altro gruppo.');
+          }
+
+          const target=prompt(
+            'Sposta in quale gruppo?\n'+
+            other.map((x,i)=>(i+1)+'. '+x.name).join('\n')+
+            '\nInserisci il numero:'
+          );
+
+          if(target===null)return;
+          const chosen=other[Number(target)-1];
+
+          if(!chosen)return alert('Numero non valido.');
+
+          await perform(async()=>{
+            const {error}=await db.from('wedding_guests')
+              .update({group_id:chosen.id})
+              .eq('id',guest.id);
+
+            if(error)throw error;
+          });
+        }));
+
+        controls.append(btn('Elimina',async()=>{
+          if(!confirm(
+            'Eliminare definitivamente '+guest.full_name+'?'
+          ))return;
+
+          await perform(async()=>{
+            const {error}=await db.from('wedding_guests')
+              .delete()
+              .eq('id',guest.id);
+
+            if(error)throw error;
+          });
+        },'danger'));
+
+        line.append(controls);
+        details.append(line);
+      }
+
+      const form=node('form',undefined,'row');
+      const f=field('Aggiungi invitato','','Nome e cognome');
+
+      f.inp.required=true;
+      f.inp.maxLength=150;
+      form.append(f.wrap);
+
+      const add=node('button','Aggiungi');
+      add.type='submit';
+      form.append(add);
+
+      form.addEventListener('submit',e=>{
+        e.preventDefault();
+
+        const name=f.inp.value.trim();
+        if(!name)return;
+
+        perform(async()=>{
           const {error}=await db.from('wedding_guests')
-            .update({group_id:chosen.id})
-            .eq('id',guest.id);
+            .insert({
+              group_id:group.id,
+              full_name:name,
+              rsvp_status:'pending'
+            });
 
           if(error)throw error;
+          expanded.add(group.id);
         });
-      }));
+      });
 
-      controls.append(btn('Elimina',async()=>{
-        if(!confirm(
-          'Eliminare definitivamente '+guest.full_name+'?'
-        ))return;
-
-        await perform(async()=>{
-          const {error}=await db.from('wedding_guests')
-            .delete()
-            .eq('id',guest.id);
-
-          if(error)throw error;
-        });
-      },'danger'));
-
-      line.append(controls);
-      box.append(line);
+      details.append(form);
+      box.append(details);
     }
 
-    const form=node('form',undefined,'row');
-    const f=field('Aggiungi invitato','','Nome e cognome');
-
-    f.inp.required=true;
-    f.inp.maxLength=150;
-    form.append(f.wrap);
-
-    const add=node('button','Aggiungi');
-    add.type='submit';
-    form.append(add);
-
-    form.addEventListener('submit',e=>{
-      e.preventDefault();
-
-      const name=f.inp.value.trim();
-      if(!name)return;
-
-      perform(async()=>{
-        const {error}=await db.from('wedding_guests')
-          .insert({
-            group_id:group.id,
-            full_name:name,
-            rsvp_status:'pending'
-          });
-
-        if(error)throw error;
-      });
-    });
-
-    box.append(form);
     root.append(box);
+  }
+
+  $('resultCount').textContent=
+    visibleFamilies+' famiglie · '+
+    visibleGuests+' invitati corrispondenti';
+
+  if(visibleFamilies===0){
+    root.append(node('div',
+      'Nessun risultato. Modifica la ricerca o il filtro.',
+      'empty'
+    ));
   }
 }
 
-/*
-  GENERAZIONE QR CORRETTA
+function csvCell(value){
+  const text=String(value??'');
+  return '"'+text.replace(/"/g,'""')+'"';
+}
 
-  La libreria viene caricata nella finestra principale.
-  Il QR viene creato soltanto quando la libreria è pronta.
-  Il PNG viene disegnato su un canvas trasparente.
+function exportCsv(){
+  const rows=[
+    ['Famiglia','Nome invito','Invitato','Stato RSVP']
+  ];
+
+  for(const group of groups){
+    const familyGuests=guests.filter(g=>g.group_id===group.id);
+
+    for(const guest of familyGuests){
+      const status={
+        confirmed:'Confermato',
+        declined:'Non parteciperà',
+        pending:'In attesa'
+      }[guest.rsvp_status]||guest.rsvp_status;
+
+      rows.push([
+        group.name,
+        group.display_name||group.name,
+        guest.full_name,
+        status
+      ]);
+    }
+  }
+
+  // UTF-8 BOM e separatore per Excel italiano.
+  const content='\uFEFFsep=;\r\n'+
+    rows.map(row=>row.map(csvCell).join(';')).join('\r\n');
+
+  const blob=new Blob([content],{
+    type:'text/csv;charset=utf-8'
+  });
+
+  const objectUrl=window.URL.createObjectURL(blob);
+  const a=document.createElement('a');
+
+  a.href=objectUrl;
+  a.download='invitati-matrimonio-daniele-francesca.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  setTimeout(()=>{
+    window.URL.revokeObjectURL(objectUrl);
+  },1000);
+}
+
+/*
+  QR CODE E PNG TRASPARENTE
 */
 
 let qrLibraryPromise=null;
 
 function loadQrLibrary(){
   if(window.QRCode)return Promise.resolve();
-
   if(qrLibraryPromise)return qrLibraryPromise;
 
   qrLibraryPromise=new Promise((resolve,reject)=>{
@@ -633,8 +830,6 @@ function makeTransparentPng(source){
   });
 
   ctx.imageSmoothingEnabled=false;
-
-  // Margine trasparente attorno al codice.
   ctx.drawImage(source,80,80,864,864);
 
   const pixels=ctx.getImageData(0,0,1024,1024);
@@ -644,8 +839,6 @@ function makeTransparentPng(source){
     const brightness=
       (data[i]+data[i+1]+data[i+2])/3;
 
-    // Le parti chiare diventano trasparenti.
-    // I moduli scuri rimangono neri.
     if(brightness>180){
       data[i+3]=0;
     }else{
@@ -673,8 +866,6 @@ function showQr(group){
   const link=SITE+'?invito='+
     encodeURIComponent(group.invitation_token)+'#rsvp';
 
-  // Apriamo subito la finestra, prima delle operazioni asincrone.
-  // Questo evita che il browser la blocchi come popup.
   const w=window.open('','_blank','width=480,height=650');
 
   if(!w){
@@ -774,7 +965,6 @@ Per una lettura affidabile, utilizzalo su uno sfondo chiaro.
     });
 
     const download=doc.getElementById('download');
-
     download.disabled=false;
 
     download.addEventListener('click',()=>{
@@ -832,7 +1022,6 @@ $('loginForm').addEventListener('submit',async e=>{
 
   }catch(ex){
     msg('loginMsg',err(ex),true);
-
   }finally{
     $('loginBtn').disabled=false;
   }
@@ -842,6 +1031,8 @@ $('logout').addEventListener('click',async()=>{
   await db.auth.signOut();
 
   active=false;
+  groups=[];
+  guests=[];
 
   $('dashboard').classList.add('hidden');
   $('login').classList.remove('hidden');
@@ -850,6 +1041,9 @@ $('logout').addEventListener('click',async()=>{
 });
 
 $('refresh').addEventListener('click',load);
+$('search').addEventListener('input',render);
+$('filter').addEventListener('change',render);
+$('exportCsv').addEventListener('click',exportCsv);
 
 $('groupForm').addEventListener('submit',e=>{
   e.preventDefault();
