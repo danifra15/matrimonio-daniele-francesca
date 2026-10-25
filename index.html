@@ -23,13 +23,9 @@
       --muted: #85796c;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -37,8 +33,6 @@
       color: var(--ink);
       font-family: "DM Sans", sans-serif;
     }
-
-    /* HOMEPAGE */
 
     .hero {
       min-height: 100svh;
@@ -111,8 +105,6 @@
       margin: 0;
     }
 
-    /* COUNTDOWN */
-
     .countdown-heading {
       margin-top: 35px;
     }
@@ -159,8 +151,6 @@
       font-size: 11px;
     }
 
-    /* SEZIONI */
-
     section {
       padding: 95px 20px;
       text-align: center;
@@ -179,20 +169,32 @@
     .details-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      max-width: 900px;
+      max-width: 1050px;
       gap: 25px;
       margin: 45px auto 0;
+      align-items: stretch;
     }
 
     .detail-card {
       background: var(--cream);
       border: 1px solid var(--champagne);
-      padding: 45px 25px;
+      padding: 18px 18px 40px;
+      overflow: hidden;
+    }
+
+    .location-photo {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      border: 1px solid var(--champagne);
+      border-radius: 3px;
     }
 
     .detail-card .symbol {
       font-size: 30px;
       color: var(--gold);
+      margin-top: 25px;
     }
 
     .detail-card h3 {
@@ -240,41 +242,18 @@
     }
 
     @keyframes appear {
-      from {
-        opacity: 0;
-        transform: translateY(18px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 600px) {
-      section {
-        padding: 75px 20px;
-      }
-
-      .details-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .invitation {
-        padding: 48px 20px;
-      }
-
-      .countdown {
-        gap: 5px;
-      }
-
-      .count-item {
-        padding: 14px 2px;
-      }
-
-      .count-label {
-        font-size: 9px;
-        letter-spacing: 0;
-      }
+      section { padding: 75px 20px; }
+      .details-grid { grid-template-columns: 1fr; }
+      .invitation { padding: 48px 20px; }
+      .countdown { gap: 5px; }
+      .count-item { padding: 14px 2px; }
+      .count-label { font-size: 9px; letter-spacing: 0; }
+      .detail-card { padding: 12px 12px 35px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -287,14 +266,12 @@
 </head>
 
 <body>
-
   <main>
 
-    <!-- PARTECIPAZIONE PRINCIPALE -->
+    <!-- HOMEPAGE -->
 
     <header class="hero">
       <div class="invitation">
-
         <div class="flower" aria-hidden="true">❦</div>
 
         <div class="eyebrow">
@@ -309,11 +286,7 @@
 
         <div class="divider"></div>
 
-        <div class="date">
-          15 maggio 2027
-        </div>
-
-        <!-- CONTO ALLA ROVESCIA NELLA HOMEPAGE -->
+        <div class="date">15 maggio 2027</div>
 
         <div class="eyebrow countdown-heading">
           Il nostro giorno si avvicina
@@ -342,34 +315,31 @@
             <span class="count-number" id="seconds">--</span>
             <span class="count-label">Secondi</span>
           </div>
-
         </div>
 
         <a class="scroll" href="#dettagli">
           Scopri di più ↓
         </a>
-
       </div>
     </header>
 
     <!-- CERIMONIA E RICEVIMENTO -->
 
     <section class="details-section" id="dettagli">
-
-      <div class="eyebrow">
-        Il nostro giorno speciale
-      </div>
-
-      <h2 class="section-title">
-        Dove ci incontreremo
-      </h2>
+      <div class="eyebrow">Il nostro giorno speciale</div>
+      <h2 class="section-title">Dove ci incontreremo</h2>
 
       <div class="details-grid">
 
         <article class="detail-card">
+          <img
+            class="location-photo"
+            src="chiesa.png"
+            alt="Duomo di Parma illuminato al crepuscolo"
+            loading="lazy"
+          >
 
           <div class="symbol" aria-hidden="true">✧</div>
-
           <h3>La cerimonia</h3>
 
           <p>
@@ -379,17 +349,20 @@
           </p>
 
           <a href="https://www.google.com/maps/search/?api=1&amp;query=Duomo+di+Parma"
-             target="_blank"
-             rel="noopener noreferrer">
+             target="_blank" rel="noopener noreferrer">
             Indicazioni stradali
           </a>
-
         </article>
 
         <article class="detail-card">
+          <img
+            class="location-photo"
+            src="villa.png"
+            alt="Villa del ricevimento illuminata al crepuscolo"
+            loading="lazy"
+          >
 
           <div class="symbol" aria-hidden="true">✧</div>
-
           <h3>Il ricevimento</h3>
 
           <p>
@@ -399,47 +372,31 @@
           </p>
 
           <a href="https://www.google.com/maps/search/?api=1&amp;query=Villa+La+Steccata+Traversetolo"
-             target="_blank"
-             rel="noopener noreferrer">
+             target="_blank" rel="noopener noreferrer">
             Indicazioni stradali
           </a>
-
         </article>
 
       </div>
-
     </section>
 
     <!-- MESSAGGIO FINALE -->
 
     <section class="closing">
-
-      <div class="eyebrow">
-        Daniele &amp; Francesca
-      </div>
-
-      <h2 class="section-title">
-        Non vediamo l'ora!
-      </h2>
+      <div class="eyebrow">Daniele &amp; Francesca</div>
+      <h2 class="section-title">Non vediamo l'ora!</h2>
 
       <p class="closing-message">
         La felicità è ancora più bella quando
         viene condivisa con le persone che amiamo.
       </p>
-
     </section>
 
   </main>
 
-  <footer>
-    Daniele &amp; Francesca · 15.05.2027
-  </footer>
+  <footer>Daniele &amp; Francesca · 15.05.2027</footer>
 
   <script>
-    // Il conto alla rovescia termina alla mezzanotte
-    // italiana del 15 maggio 2027.
-    // Aggiorneremo l'orario quando sarà definito.
-
     const weddingDate = new Date("2027-05-15T00:00:00+02:00");
 
     function updateCountdown() {
@@ -465,6 +422,5 @@
     updateCountdown();
     setInterval(updateCountdown, 1000);
   </script>
-
 </body>
 </html>
