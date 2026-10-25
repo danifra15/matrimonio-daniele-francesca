@@ -14,36 +14,44 @@
   --ink:#463b30;
   --line:#e7dcc7;
 }
+
 * {box-sizing:border-box}
+
 body {
   margin:0;
   background:#faf7f0;
   color:var(--ink);
   font-family:'DM Sans',sans-serif;
 }
+
 header {
   text-align:center;
   padding:32px 15px;
   background:#fffdf8;
   border-bottom:1px solid var(--line);
 }
+
 header strong {
   font:45px 'Great Vibes',cursive;
   color:var(--gold);
 }
+
 header p {
   font-size:11px;
   letter-spacing:2px;
   text-transform:uppercase;
 }
+
 main {
   max-width:1120px;
   margin:30px auto;
-  padding:0 18px;
+  padding:0 18px 50px;
 }
+
 h1 {
   font:600 38px 'Cormorant Garamond',serif;
 }
+
 button,.link {
   border:0;
   border-radius:8px;
@@ -55,17 +63,21 @@ button,.link {
   text-decoration:none;
   display:inline-block;
 }
+
 button:disabled {
   opacity:.5;
   cursor:wait;
 }
+
 .secondary {
   background:#eee6d9;
   color:var(--ink);
 }
+
 .danger {
   background:#a24b48;
 }
+
 .panel {
   background:white;
   border:1px solid var(--line);
@@ -73,6 +85,7 @@ button:disabled {
   padding:22px;
   margin:20px 0;
 }
+
 .row {
   display:flex;
   gap:10px;
@@ -80,7 +93,9 @@ button:disabled {
   justify-content:space-between;
   flex-wrap:wrap;
 }
-input {
+
+input[type=email],
+input[type=password] {
   width:100%;
   padding:12px;
   margin:7px 0;
@@ -88,22 +103,37 @@ input {
   border-radius:8px;
   font:inherit;
 }
-label {font-size:13px}
+
+label {
+  font-size:13px;
+}
+
 .muted {
   color:#857b6c;
   font-size:13px;
 }
+
 .grid {
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+  grid-template-columns:repeat(
+    auto-fill,minmax(210px,1fr)
+  );
   gap:15px;
 }
+
 .card {
   background:white;
   border:1px solid var(--line);
   border-radius:12px;
   overflow:hidden;
+  position:relative;
 }
+
+.card.selected {
+  outline:3px solid var(--gold);
+  outline-offset:-3px;
+}
+
 .preview {
   height:175px;
   background:#f2ece1;
@@ -111,35 +141,111 @@ label {font-size:13px}
   place-items:center;
   overflow:hidden;
 }
+
 .preview img,
 .preview video {
   width:100%;
   height:100%;
   object-fit:contain;
 }
+
 .preview video {
   background:#171717;
 }
-.body {padding:14px}
+
+.body {
+  padding:14px;
+}
+
 .name {
   font-size:13px;
   font-weight:600;
   overflow-wrap:anywhere;
 }
+
 .actions {
   display:flex;
   gap:8px;
   margin-top:12px;
   flex-wrap:wrap;
 }
-.actions button {padding:9px}
-.hidden {display:none!important}
+
+.actions button {
+  padding:9px;
+}
+
+.hidden {
+  display:none!important;
+}
+
 #notice {
   min-height:20px;
   color:#a24b48;
 }
+
+.selection-bar {
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  padding:16px;
+  border:1px solid var(--line);
+  background:#fffdf8;
+  border-radius:12px;
+  margin:15px 0;
+}
+
+.selection-count {
+  font-size:13px;
+  font-weight:600;
+  margin-right:auto;
+}
+
+.select-box {
+  position:absolute;
+  top:10px;
+  left:10px;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:36px;
+  height:36px;
+  border-radius:9px;
+  background:white;
+  box-shadow:0 2px 8px #0002;
+  cursor:pointer;
+}
+
+.select-box input {
+  width:21px;
+  height:21px;
+  accent-color:var(--gold);
+  cursor:pointer;
+}
+
+#progressPanel {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:18px;
+  margin:15px 0;
+}
+
+progress {
+  width:100%;
+  height:18px;
+  accent-color:var(--gold);
+}
+
+#progressText {
+  font-size:13px;
+  margin:10px 0;
+}
+
 @media(max-width:600px) {
   h1 {font-size:30px}
+  .selection-bar button {flex:1}
 }
 </style>
 </head>
@@ -152,12 +258,15 @@ label {font-size:13px}
 </header>
 
 <main>
+
   <div class="row">
     <h1>Gestione album</h1>
+
     <div>
       <a class="link secondary" href="admin.html">
-        Torna agli invitati
+        Torna al pannello
       </a>
+
       <button class="secondary hidden" id="logout">
         Esci
       </button>
@@ -166,40 +275,100 @@ label {font-size:13px}
 
   <section class="panel" id="login">
     <h2>Accesso amministratore</h2>
+
     <form id="form">
       <label>
         Email
-        <input id="email" type="email" required autocomplete="username">
+        <input
+          id="email"
+          type="email"
+          required
+          autocomplete="username"
+        >
       </label>
+
       <label>
         Password
-        <input id="password" type="password" required autocomplete="current-password">
+        <input
+          id="password"
+          type="password"
+          required
+          autocomplete="current-password"
+        >
       </label>
+
       <button>Accedi</button>
     </form>
   </section>
 
   <section class="hidden" id="app">
+
     <div class="panel row">
       <div>
         <b id="count">0 file</b>
+
         <p class="muted">
-          Gli originali rimangono privati.
-          I link di download scadono dopo 2 minuti.
+          Fotografie e video originali.
+          I link di download sono temporanei.
         </p>
       </div>
+
       <button id="refresh">Aggiorna</button>
     </div>
 
+    <div class="selection-bar">
+
+      <button id="selectAll" class="secondary">
+        Seleziona tutti
+      </button>
+
+      <button id="clearSelection" class="secondary">
+        Deseleziona
+      </button>
+
+      <span class="selection-count" id="selectedCount">
+        0 selezionati
+      </span>
+
+      <button id="downloadZip" disabled>
+        Scarica ZIP
+      </button>
+
+    </div>
+
+    <div id="progressPanel" class="hidden">
+
+      <strong>Preparazione archivio ZIP</strong>
+
+      <p id="progressText">
+        Preparazione...
+      </p>
+
+      <progress id="progressBar" value="0" max="100">
+      </progress>
+
+      <p class="muted">
+        Non chiudere questa pagina durante
+        la preparazione dell'archivio.
+      </p>
+
+    </div>
+
     <div id="gallery" class="grid"></div>
+
   </section>
 
   <p id="notice" role="status"></p>
+
 </main>
 
 <script type="module">
+
 import {createClient} from
 'https://esm.sh/@supabase/supabase-js@2.57.0';
+
+import JSZip from
+'https://esm.sh/jszip@3.10.1';
 
 const db=createClient(
   'https://odvbiesoqngieuexoxsl.supabase.co',
@@ -209,10 +378,18 @@ const db=createClient(
 const endpoint=
   'https://odvbiesoqngieuexoxsl.supabase.co/functions/v1/wedding-album-admin';
 
-const $=x=>document.getElementById(x);
-const say=x=>$('notice').textContent=x;
+const $=id=>document.getElementById(id);
+
+const say=text=>{
+  $('notice').textContent=text;
+};
+
+let mediaItems=[];
+const selected=new Set();
+let downloading=false;
 
 async function call(action,more={}) {
+
   const {data:{session}}=await db.auth.getSession();
 
   if(!session) {
@@ -231,14 +408,18 @@ async function call(action,more={}) {
   const data=await res.json();
 
   if(!res.ok) {
-    throw Error(data.error||'Operazione non riuscita');
+    throw Error(
+      data.error||'Operazione non riuscita'
+    );
   }
 
   return data;
 }
 
 async function enter() {
+
   const {data:{user}}=await db.auth.getUser();
+
   if(!user)return;
 
   const {data,error}=await db
@@ -259,136 +440,455 @@ async function enter() {
   await load();
 }
 
+function updateSelection() {
+
+  $('selectedCount').textContent=
+    selected.size+' selezionati';
+
+  $('downloadZip').disabled=
+    selected.size===0||downloading;
+
+  $('selectAll').disabled=downloading;
+  $('clearSelection').disabled=downloading;
+
+  document.querySelectorAll('.card').forEach(card=>{
+
+    const id=card.dataset.id;
+    const checked=selected.has(id);
+
+    card.classList.toggle('selected',checked);
+
+    const checkbox=card.querySelector(
+      'input[type=checkbox]'
+    );
+
+    if(checkbox)checkbox.checked=checked;
+  });
+}
+
+function setBusy(busy) {
+  downloading=busy;
+  $('refresh').disabled=busy;
+  updateSelection();
+}
+
+function formatBytes(bytes) {
+  return (bytes/1048576).toFixed(2)+' MB';
+}
+
 async function load() {
+
+  if(downloading)return;
+
   say('');
 
   try {
+
     const {items}=await call('list');
 
-    $('count').textContent=items.length+' file';
+    mediaItems=items||[];
 
-    const g=$('gallery');
-    g.replaceChildren();
+    const existing=new Set(
+      mediaItems.map(item=>item.id)
+    );
 
-    if(!items.length) {
-      g.textContent='Non ci sono ancora fotografie o video.';
+    for(const id of selected) {
+      if(!existing.has(id))selected.delete(id);
+    }
+
+    $('count').textContent=
+      mediaItems.length+' file';
+
+    const gallery=$('gallery');
+    gallery.replaceChildren();
+
+    if(!mediaItems.length) {
+      gallery.textContent=
+        'Non ci sono ancora fotografie o video.';
+
+      updateSelection();
       return;
     }
 
-    for(const item of items) {
-      const c=document.createElement('article');
-      c.className='card';
+    for(const item of mediaItems) {
 
-      const p=document.createElement('div');
-      p.className='preview';
+      const card=document.createElement('article');
+      card.className='card';
+      card.dataset.id=item.id;
 
-      if(item.media_type==='image' && item.preview_url) {
+      const selectLabel=document.createElement('label');
+      selectLabel.className='select-box';
+      selectLabel.title='Seleziona file';
+
+      const checkbox=document.createElement('input');
+      checkbox.type='checkbox';
+      checkbox.checked=selected.has(item.id);
+      checkbox.disabled=downloading;
+
+      checkbox.addEventListener('change',()=>{
+
+        if(checkbox.checked) {
+          selected.add(item.id);
+        } else {
+          selected.delete(item.id);
+        }
+
+        updateSelection();
+      });
+
+      selectLabel.append(checkbox);
+
+      const preview=document.createElement('div');
+      preview.className='preview';
+
+      if(
+        item.media_type==='image' &&
+        item.preview_url
+      ) {
+
         const img=document.createElement('img');
+
         img.src=item.preview_url;
         img.alt=item.original_filename||'Fotografia';
         img.loading='lazy';
-        p.append(img);
+
+        preview.append(img);
 
       } else if(item.media_type==='video') {
+
         const play=document.createElement('button');
+
         play.textContent='▶ Riproduci video';
         play.className='secondary';
 
         play.onclick=async()=>{
+
           play.disabled=true;
 
           try {
-            const {url}=await call('view',{id:item.id});
+
+            const {url}=await call('view',{
+              id:item.id
+            });
 
             const video=document.createElement('video');
+
             video.src=url;
             video.controls=true;
             video.playsInline=true;
             video.preload='metadata';
 
-            p.replaceChildren(video);
+            preview.replaceChildren(video);
+
             video.play().catch(()=>{});
 
-          } catch(e) {
+          }catch(e) {
             say(e.message);
             play.disabled=false;
           }
         };
 
-        p.append(play);
+        preview.append(play);
 
       } else {
-        p.textContent='📷 Anteprima non disponibile';
+
+        preview.textContent=
+          '📷 Anteprima non disponibile';
       }
 
-      const b=document.createElement('div');
-      b.className='body';
+      const body=document.createElement('div');
+      body.className='body';
 
       const title=document.createElement('div');
       title.className='name';
-      title.textContent=item.original_filename||'File';
+
+      title.textContent=
+        item.original_filename||'File';
 
       const meta=document.createElement('p');
       meta.className='muted';
 
       meta.textContent=[
         item.uploader_name||'Invitato',
-        new Date(item.created_at).toLocaleDateString('it-IT'),
-        (item.original_size/1048576).toFixed(2)+' MB'
+        new Date(item.created_at)
+          .toLocaleDateString('it-IT'),
+        formatBytes(item.original_size||0)
       ].join(' · ');
 
-      const a=document.createElement('div');
-      a.className='actions';
+      const actions=document.createElement('div');
+      actions.className='actions';
 
-      const down=document.createElement('button');
-      down.textContent='Scarica originale';
+      const download=document.createElement('button');
 
-      down.onclick=async()=>{
-        down.disabled=true;
+      download.textContent='Scarica originale';
+
+      download.onclick=async()=>{
+
+        download.disabled=true;
 
         try {
-          const {url}=await call('download',{id:item.id});
+
+          const {url}=await call('download',{
+            id:item.id
+          });
+
           window.open(url,'_blank','noopener');
-        } catch(e) {
+
+        }catch(e) {
           say(e.message);
-        } finally {
-          down.disabled=false;
+        }finally {
+          download.disabled=false;
         }
       };
 
       const del=document.createElement('button');
+
       del.className='danger';
       del.textContent='Elimina';
 
       del.onclick=async()=>{
+
+        if(downloading)return;
+
         if(!confirm(
-          'Eliminare definitivamente '+item.original_filename+'?'
+          'Eliminare definitivamente '+
+          item.original_filename+'?'
         ))return;
 
         del.disabled=true;
 
         try {
+
           await call('delete',{id:item.id});
+
+          selected.delete(item.id);
+
           await load();
-        } catch(e) {
+
+        }catch(e) {
           say(e.message);
           del.disabled=false;
         }
       };
 
-      a.append(down,del);
-      b.append(title,meta,a);
-      c.append(p,b);
-      g.append(c);
+      actions.append(download,del);
+      body.append(title,meta,actions);
+
+      card.append(selectLabel,preview,body);
+      gallery.append(card);
     }
 
-  } catch(e) {
+    updateSelection();
+
+  }catch(e) {
     say(e.message);
   }
 }
 
+$('selectAll').onclick=()=>{
+
+  if(downloading)return;
+
+  for(const item of mediaItems) {
+    selected.add(item.id);
+  }
+
+  updateSelection();
+};
+
+$('clearSelection').onclick=()=>{
+
+  if(downloading)return;
+
+  selected.clear();
+  updateSelection();
+};
+
+function uniqueName(name,used) {
+
+  let safe=String(name||'file')
+    .replace(/[\\/:*?"<>|]/g,'_')
+    .replace(/[\x00-\x1f]/g,'_')
+    .trim();
+
+  if(!safe)safe='file';
+
+  let candidate=safe;
+  let index=2;
+
+  while(used.has(candidate.toLowerCase())) {
+
+    const dot=safe.lastIndexOf('.');
+
+    const base=dot>0
+      ?safe.slice(0,dot)
+      :safe;
+
+    const extension=dot>0
+      ?safe.slice(dot)
+      :'';
+
+    candidate=
+      base+' ('+index+')'+extension;
+
+    index++;
+  }
+
+  used.add(candidate.toLowerCase());
+
+  return candidate;
+}
+
+$('downloadZip').onclick=async()=>{
+
+  if(downloading||!selected.size)return;
+
+  const files=mediaItems.filter(
+    item=>selected.has(item.id)
+  );
+
+  if(!files.length)return;
+
+  const totalBytes=files.reduce(
+    (sum,item)=>sum+(item.original_size||0),
+    0
+  );
+
+  const gb=totalBytes/1073741824;
+
+  if(gb>1.5) {
+
+    alert(
+      'Hai selezionato circa '+
+      gb.toFixed(2)+' GB di file.\n\n'+
+      'Per evitare problemi di memoria, '+
+      'scarica gruppi più piccoli, '+
+      'preferibilmente sotto 1,5 GB.'
+    );
+
+    return;
+  }
+
+  setBusy(true);
+
+  $('progressPanel').classList.remove('hidden');
+  $('progressBar').value=0;
+
+  say('');
+
+  const zip=new JSZip();
+  const usedNames=new Set();
+
+  try {
+
+    let completed=0;
+
+    for(const item of files) {
+
+      $('progressText').textContent=
+        'Download originale '+
+        (completed+1)+' di '+files.length+
+        ': '+(item.original_filename||'File');
+
+      const {url}=await call('download',{
+        id:item.id
+      });
+
+      const response=await fetch(url);
+
+      if(!response.ok) {
+        throw Error(
+          'Impossibile scaricare '+
+          item.original_filename
+        );
+      }
+
+      const blob=await response.blob();
+
+      const filename=uniqueName(
+        item.original_filename,
+        usedNames
+      );
+
+      zip.file(filename,blob,{
+        binary:true,
+        compression:'STORE'
+      });
+
+      completed++;
+
+      $('progressBar').value=
+        Math.round(
+          completed/files.length*70
+        );
+    }
+
+    $('progressText').textContent=
+      'Creazione archivio ZIP…';
+
+    const archive=await zip.generateAsync(
+      {
+        type:'blob',
+        compression:'STORE',
+        streamFiles:true
+      },
+      metadata=>{
+
+        $('progressBar').value=
+          70+Math.round(
+            metadata.percent*0.3
+          );
+
+        $('progressText').textContent=
+          'Creazione ZIP: '+
+          Math.round(metadata.percent)+'%';
+      }
+    );
+
+    const objectUrl=URL.createObjectURL(archive);
+
+    const link=document.createElement('a');
+
+    link.href=objectUrl;
+    link.download=
+      'Daniele-Francesca-Album-'+
+      new Date().toISOString().slice(0,10)+
+      '.zip';
+
+    document.body.append(link);
+    link.click();
+    link.remove();
+
+    setTimeout(()=>{
+      URL.revokeObjectURL(objectUrl);
+    },60000);
+
+    $('progressBar').value=100;
+
+    $('progressText').textContent=
+      'Archivio pronto: '+
+      files.length+' file.';
+
+    selected.clear();
+    updateSelection();
+
+  }catch(e) {
+
+    $('progressText').textContent=
+      'Download non completato.';
+
+    say(e.message);
+
+  }finally {
+
+    setBusy(false);
+  }
+};
+
 $('form').onsubmit=async e=>{
+
   e.preventDefault();
+
   say('Accesso in corso…');
 
   const {error}=await db.auth.signInWithPassword({
@@ -405,13 +905,18 @@ $('form').onsubmit=async e=>{
 };
 
 $('logout').onclick=async()=>{
+
+  if(downloading)return;
+
   await db.auth.signOut();
+
   location.reload();
 };
 
 $('refresh').onclick=load;
 
 enter().catch(e=>say(e.message));
+
 </script>
 
 </body>
