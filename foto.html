@@ -1,0 +1,696 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f5ee">
+  <title>I nostri ricordi | Daniele & Francesca</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ivory: #f8f5ee;
+      --paper: #fffdf9;
+      --gold: #b49a62;
+      --gold-dark: #8b7240;
+      --ink: #433d33;
+      --muted: #817a6e;
+      --line: #e7ddc9;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--ivory);
+      color: var(--ink);
+      font-family: "DM Sans", sans-serif;
+      line-height: 1.6;
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    .page {
+      max-width: 1050px;
+      margin: auto;
+      padding: 25px 18px 80px;
+    }
+
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 70px 20px 55px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "✿";
+      position: absolute;
+      font-size: 95px;
+      color: #d8c9a5;
+      opacity: .35;
+      pointer-events: none;
+    }
+
+    .hero::before {
+      left: -20px;
+      top: -30px;
+    }
+
+    .hero::after {
+      right: -20px;
+      bottom: -35px;
+      transform: rotate(180deg);
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+    }
+
+    h1 {
+      font-family: "Great Vibes", cursive;
+      font-size: clamp(58px, 10vw, 94px);
+      line-height: 1.15;
+      font-weight: 400;
+      margin: 18px 0 8px;
+      color: var(--gold-dark);
+    }
+
+    .names {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 29px;
+      letter-spacing: 1px;
+    }
+
+    .hero-description {
+      max-width: 540px;
+      margin: 22px auto 0;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .ornament {
+      color: var(--gold);
+      font-size: 22px;
+      margin: 16px 0;
+    }
+
+    .demo-banner {
+      margin-top: 22px;
+      padding: 12px 16px;
+      background: #f1e9d9;
+      border: 1px solid #e4d6b8;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 12px;
+      color: #75603d;
+    }
+
+    .section {
+      margin-top: 54px;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .section-heading h2 {
+      font-family: "Cormorant Garamond", serif;
+      font-weight: 500;
+      font-size: 40px;
+      margin: 0;
+    }
+
+    .section-heading p {
+      margin: 5px auto;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .upload-card {
+      max-width: 760px;
+      margin: auto;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 12px 35px rgba(80, 65, 35, .035);
+    }
+
+    .field-label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .name-input {
+      width: 100%;
+      padding: 13px 15px;
+      border: 1px solid var(--line);
+      background: white;
+      border-radius: 8px;
+      color: var(--ink);
+      outline: none;
+    }
+
+    .name-input:focus {
+      border-color: var(--gold);
+    }
+
+    .optional {
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .drop-zone {
+      margin-top: 22px;
+      border: 2px dashed #d8c8a7;
+      border-radius: 12px;
+      background: #fcfaf5;
+      padding: 38px 18px;
+      text-align: center;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .drop-zone:hover,
+    .drop-zone.dragging {
+      background: #f6efdf;
+      border-color: var(--gold);
+    }
+
+    .camera-icon {
+      font-size: 40px;
+      line-height: 1;
+    }
+
+    .drop-zone strong {
+      display: block;
+      margin-top: 12px;
+      font-size: 16px;
+    }
+
+    .drop-zone p {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 6px 0 0;
+    }
+
+    .button {
+      display: inline-block;
+      border: 1px solid var(--gold);
+      background: var(--gold-dark);
+      color: white;
+      padding: 13px 23px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: .2s;
+    }
+
+    .button:hover {
+      background: #6f5b35;
+    }
+
+    .button.secondary {
+      color: var(--gold-dark);
+      background: transparent;
+    }
+
+    .button.secondary:hover {
+      background: #f3ebdc;
+    }
+
+    .button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .choose-button {
+      margin-top: 18px;
+    }
+
+    .note {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-top: 26px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .preview-grid,
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .media-card {
+      position: relative;
+      overflow: hidden;
+      background: #eee9df;
+      border-radius: 9px;
+      aspect-ratio: 1;
+    }
+
+    .media-card img,
+    .media-card video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .media-card video {
+      background: #2d2a26;
+    }
+
+    .remove-preview {
+      position: absolute;
+      right: 7px;
+      top: 7px;
+      background: rgba(35, 30, 24, .85);
+      color: white;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .file-label {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      padding: 20px 9px 8px;
+      background: linear-gradient(transparent, rgba(0,0,0,.65));
+      color: white;
+      font-size: 11px;
+      overflow-wrap: anywhere;
+    }
+
+    .actions {
+      text-align: center;
+      margin-top: 24px;
+    }
+
+    .message {
+      margin-top: 16px;
+      font-size: 13px;
+      text-align: center;
+      color: var(--gold-dark);
+    }
+
+    .empty-gallery {
+      padding: 60px 20px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      text-align: center;
+      border-radius: 12px;
+      color: var(--muted);
+    }
+
+    .empty-gallery .symbol {
+      font-size: 38px;
+      margin-bottom: 10px;
+    }
+
+    .empty-gallery strong {
+      display: block;
+      color: var(--ink);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 28px;
+      font-weight: 500;
+    }
+
+    .empty-gallery p {
+      font-size: 13px;
+      margin: 10px auto 0;
+      max-width: 420px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 60px 15px 10px;
+      color: var(--gold-dark);
+    }
+
+    footer .signature {
+      font-family: "Great Vibes", cursive;
+      font-size: 40px;
+    }
+
+    footer .date {
+      font-size: 11px;
+      letter-spacing: 2px;
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        padding: 12px 12px 45px;
+      }
+
+      .hero {
+        padding: 60px 16px 48px;
+      }
+
+      .names {
+        font-size: 25px;
+      }
+
+      .upload-card {
+        padding: 20px 15px;
+      }
+
+      .preview-grid,
+      .gallery {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+      }
+
+      .section {
+        margin-top: 40px;
+      }
+
+      .section-heading h2 {
+        font-size: 35px;
+      }
+
+      .button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+
+    <header class="hero">
+      <div class="eyebrow">15 maggio 2027</div>
+
+      <h1>I nostri ricordi</h1>
+
+      <div class="ornament">✦</div>
+
+      <div class="names">Daniele & Francesca</div>
+
+      <p class="hero-description">
+        I momenti più belli sono quelli che viviamo insieme.
+        Aiutateci a custodire ogni sorriso, ogni abbraccio
+        e ogni piccolo istante del nostro giorno speciale.
+      </p>
+    </header>
+
+    <div class="demo-banner">
+      Modalità anteprima: puoi provare la selezione dei file.
+      Nessuna fotografia o video viene ancora caricato online.
+    </div>
+
+    <section class="section" id="carica">
+      <div class="section-heading">
+        <div class="eyebrow">Condividi un momento</div>
+        <h2>Le tue fotografie</h2>
+        <p>Ogni ricordo racconta una parte della nostra storia.</p>
+      </div>
+
+      <div class="upload-card">
+
+        <label class="field-label" for="guestName">
+          Il tuo nome <span class="optional">(facoltativo)</span>
+        </label>
+
+        <input
+          class="name-input"
+          id="guestName"
+          type="text"
+          maxlength="80"
+          placeholder="Come ti chiami?"
+          autocomplete="name"
+        >
+
+        <input
+          id="fileInput"
+          type="file"
+          accept="image/*,video/*"
+          multiple
+          hidden
+        >
+
+        <div
+          class="drop-zone"
+          id="dropZone"
+          role="button"
+          tabindex="0"
+          aria-label="Seleziona fotografie e video"
+        >
+          <div class="camera-icon">📷</div>
+          <strong>Aggiungi foto e video</strong>
+          <p>Seleziona i ricordi dalla galleria del telefono</p>
+          <button
+            type="button"
+            class="button secondary choose-button"
+            id="chooseButton"
+          >
+            Scegli i file
+          </button>
+        </div>
+
+        <p class="note">
+          I file originali saranno conservati senza compressione
+          o ridimensionamento.
+        </p>
+
+        <div id="previewArea" hidden>
+          <div class="preview-header">
+            <span id="fileCount">0 file selezionati</span>
+            <button
+              type="button"
+              class="button secondary"
+              id="clearButton"
+            >
+              Svuota
+            </button>
+          </div>
+
+          <div class="preview-grid" id="previewGrid"></div>
+
+          <div class="actions">
+            <button
+              type="button"
+              class="button"
+              id="uploadButton"
+            >
+              Carica i tuoi ricordi
+            </button>
+          </div>
+        </div>
+
+        <div class="message" id="message" role="status"></div>
+      </div>
+    </section>
+
+    <section class="section" id="album">
+      <div class="section-heading">
+        <div class="eyebrow">Il nostro album condiviso</div>
+        <h2>Attraverso i vostri occhi</h2>
+        <p>Una raccolta di momenti indimenticabili.</p>
+      </div>
+
+      <div class="empty-gallery" id="emptyGallery">
+        <div class="symbol">♡</div>
+        <strong>Qui nasceranno i nostri ricordi</strong>
+        <p>
+          Le fotografie e i video condivisi dagli invitati
+          appariranno in questa galleria.
+        </p>
+      </div>
+
+      <div class="gallery" id="gallery" hidden></div>
+    </section>
+
+    <footer>
+      <div class="signature">Daniele & Francesca</div>
+      <div class="date">15 · 05 · 2027</div>
+    </footer>
+
+  </main>
+
+  <script>
+    const fileInput = document.getElementById("fileInput");
+    const dropZone = document.getElementById("dropZone");
+    const chooseButton = document.getElementById("chooseButton");
+    const previewArea = document.getElementById("previewArea");
+    const previewGrid = document.getElementById("previewGrid");
+    const fileCount = document.getElementById("fileCount");
+    const clearButton = document.getElementById("clearButton");
+    const uploadButton = document.getElementById("uploadButton");
+    const message = document.getElementById("message");
+
+    let selectedFiles = [];
+
+    function openPicker() {
+      fileInput.click();
+    }
+
+    chooseButton.addEventListener("click", event => {
+      event.stopPropagation();
+      openPicker();
+    });
+
+    dropZone.addEventListener("click", openPicker);
+
+    dropZone.addEventListener("keydown", event => {
+      if (event.target !== dropZone) return;
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openPicker();
+      }
+    });
+
+    fileInput.addEventListener("change", () => {
+      addFiles(Array.from(fileInput.files));
+      fileInput.value = "";
+    });
+
+    dropZone.addEventListener("dragover", event => {
+      event.preventDefault();
+      dropZone.classList.add("dragging");
+    });
+
+    dropZone.addEventListener("dragleave", () => {
+      dropZone.classList.remove("dragging");
+    });
+
+    dropZone.addEventListener("drop", event => {
+      event.preventDefault();
+      dropZone.classList.remove("dragging");
+      addFiles(Array.from(event.dataTransfer.files));
+    });
+
+    function isSupported(file) {
+      return file.type.startsWith("image/") ||
+             file.type.startsWith("video/");
+    }
+
+    function addFiles(files) {
+      const validFiles = files.filter(isSupported);
+
+      if (validFiles.length !== files.length) {
+        message.textContent =
+          "Alcuni file non sono fotografie o video supportati.";
+      } else {
+        message.textContent = "";
+      }
+
+      selectedFiles.push(...validFiles);
+      renderPreviews();
+    }
+
+    function renderPreviews() {
+      previewGrid.innerHTML = "";
+
+      previewArea.hidden = selectedFiles.length === 0;
+      fileCount.textContent =
+        selectedFiles.length + " file selezionati";
+
+      selectedFiles.forEach((file, index) => {
+        const card = document.createElement("div");
+        card.className = "media-card";
+
+        const url = URL.createObjectURL(file);
+        const isVideo = file.type.startsWith("video/");
+
+        const media = document.createElement(
+          isVideo ? "video" : "img"
+        );
+
+        media.src = url;
+
+        if (isVideo) {
+          media.controls = true;
+          media.preload = "metadata";
+        } else {
+          media.alt = "Anteprima della fotografia";
+        }
+
+        media.addEventListener("error", () => {
+          URL.revokeObjectURL(url);
+        });
+
+        const label = document.createElement("div");
+        label.className = "file-label";
+        label.textContent = file.name;
+
+        const remove = document.createElement("button");
+        remove.className = "remove-preview";
+        remove.type = "button";
+        remove.textContent = "×";
+        remove.setAttribute(
+          "aria-label",
+          "Rimuovi " + file.name + " dalla selezione"
+        );
+
+        remove.addEventListener("click", () => {
+          selectedFiles.splice(index, 1);
+          renderPreviews();
+        });
+
+        card.append(media, label, remove);
+        previewGrid.appendChild(card);
+      });
+    }
+
+    clearButton.addEventListener("click", () => {
+      selectedFiles = [];
+      previewGrid.innerHTML = "";
+      previewArea.hidden = true;
+      message.textContent = "";
+    });
+
+    uploadButton.addEventListener("click", () => {
+      message.textContent =
+        "La selezione funziona! Il caricamento online " +
+        "sarà attivato dopo il collegamento a Supabase.";
+    });
+
+    window.addEventListener("pagehide", () => {
+      document.querySelectorAll(
+        ".preview-grid img, .preview-grid video"
+      ).forEach(media => {
+        if (media.src.startsWith("blob:")) {
+          URL.revokeObjectURL(media.src);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
