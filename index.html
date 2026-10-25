@@ -3,8 +3,9 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#faf6ed">
+  <meta name="description" content="Il matrimonio di Daniele e Francesca - 15 maggio 2027">
   <title>Daniele & Francesca | 15 maggio 2027</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,9 +23,13 @@
       --muted: #85796c;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       margin: 0;
@@ -32,6 +37,8 @@
       color: var(--ink);
       font-family: "DM Sans", sans-serif;
     }
+
+    /* HOMEPAGE */
 
     .hero {
       min-height: 100svh;
@@ -45,9 +52,8 @@
     }
 
     .invitation {
-      position: relative;
       width: min(100%, 780px);
-      padding: clamp(55px, 9vw, 95px) 25px;
+      padding: clamp(45px, 7vw, 85px) 25px;
       text-align: center;
       border: 1px solid var(--champagne);
       outline: 1px solid var(--champagne);
@@ -61,7 +67,6 @@
       color: var(--gold);
       font-size: 32px;
       margin-bottom: 24px;
-      line-height: 1;
     }
 
     .eyebrow {
@@ -99,19 +104,49 @@
       margin: 32px auto;
     }
 
-    .quote {
+    .date {
       font-family: "Cormorant Garamond", serif;
-      font-style: italic;
-      font-size: clamp(23px, 4vw, 32px);
-      line-height: 1.3;
+      font-size: clamp(30px, 5vw, 42px);
+      color: var(--gold-dark);
       margin: 0;
     }
 
-    .date {
+    /* COUNTDOWN */
+
+    .countdown-heading {
       margin-top: 35px;
+    }
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      max-width: 600px;
+      margin: 25px auto 0;
+      gap: 10px;
+    }
+
+    .count-item {
+      min-width: 0;
+      padding: 20px 5px;
+      border: 1px solid var(--champagne);
+    }
+
+    .count-number {
+      display: block;
       font-family: "Cormorant Garamond", serif;
-      font-size: clamp(27px, 5vw, 38px);
+      font-size: clamp(35px, 8vw, 60px);
       color: var(--gold-dark);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .count-label {
+      display: block;
+      margin-top: 10px;
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
     }
 
     .scroll {
@@ -124,6 +159,8 @@
       font-size: 11px;
     }
 
+    /* SEZIONI */
+
     section {
       padding: 95px 20px;
       text-align: center;
@@ -135,55 +172,13 @@
       line-height: 1;
     }
 
-    .intro {
-      max-width: 590px;
-      margin: 0 auto;
-      color: var(--muted);
-      line-height: 1.9;
-      font-size: 15px;
-    }
-
-    .countdown-section {
-      background: var(--cream);
-    }
-
-    .countdown {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      max-width: 600px;
-      margin: 45px auto 0;
-      gap: 10px;
-    }
-
-    .count-item {
-      padding: 20px 5px;
-      border: 1px solid var(--champagne);
-    }
-
-    .count-number {
-      display: block;
-      font-family: "Cormorant Garamond", serif;
-      font-size: clamp(35px, 8vw, 60px);
-      color: var(--gold-dark);
-      line-height: 1;
-    }
-
-    .count-label {
-      display: block;
-      margin-top: 10px;
-      font-size: 10px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
     .details-section {
       background: var(--ivory);
     }
 
     .details-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       max-width: 900px;
       gap: 25px;
       margin: 45px auto 0;
@@ -245,14 +240,41 @@
     }
 
     @keyframes appear {
-      from { opacity: 0; transform: translateY(18px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @media (max-width: 600px) {
-      .details-grid { grid-template-columns: 1fr; }
-      section { padding: 75px 20px; }
-      .invitation { padding-left: 20px; padding-right: 20px; }
+      section {
+        padding: 75px 20px;
+      }
+
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .invitation {
+        padding: 48px 20px;
+      }
+
+      .countdown {
+        gap: 5px;
+      }
+
+      .count-item {
+        padding: 14px 2px;
+      }
+
+      .count-label {
+        font-size: 9px;
+        letter-spacing: 0;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -265,11 +287,19 @@
 </head>
 
 <body>
+
   <main>
+
+    <!-- PARTECIPAZIONE PRINCIPALE -->
+
     <header class="hero">
       <div class="invitation">
+
         <div class="flower" aria-hidden="true">❦</div>
-        <div class="eyebrow">Con immensa gioia annunciamo il nostro matrimonio</div>
+
+        <div class="eyebrow">
+          Con immensa gioia annunciamo il nostro matrimonio
+        </div>
 
         <h1>
           Daniele
@@ -279,103 +309,144 @@
 
         <div class="divider"></div>
 
-        <p class="quote">
-          Due cuori, una promessa,<br>
-          una vita da condividere.
-        </p>
+        <div class="date">
+          15 maggio 2027
+        </div>
 
-        <div class="date">15 maggio 2027</div>
+        <!-- CONTO ALLA ROVESCIA NELLA HOMEPAGE -->
 
-        <a class="scroll" href="#conto-alla-rovescia">
+        <div class="eyebrow countdown-heading">
+          Il nostro giorno si avvicina
+        </div>
+
+        <div class="countdown"
+             role="timer"
+             aria-label="Tempo rimanente al matrimonio">
+
+          <div class="count-item">
+            <span class="count-number" id="days">--</span>
+            <span class="count-label">Giorni</span>
+          </div>
+
+          <div class="count-item">
+            <span class="count-number" id="hours">--</span>
+            <span class="count-label">Ore</span>
+          </div>
+
+          <div class="count-item">
+            <span class="count-number" id="minutes">--</span>
+            <span class="count-label">Minuti</span>
+          </div>
+
+          <div class="count-item">
+            <span class="count-number" id="seconds">--</span>
+            <span class="count-label">Secondi</span>
+          </div>
+
+        </div>
+
+        <a class="scroll" href="#dettagli">
           Scopri di più ↓
         </a>
+
       </div>
     </header>
 
-    <section class="countdown-section" id="conto-alla-rovescia">
-      <div class="eyebrow">In attesa del nostro giorno</div>
-      <h2 class="section-title">Il conto alla rovescia</h2>
-
-      <p class="intro">
-        Ogni giorno ci avvicina a un momento speciale,
-        che non vediamo l'ora di condividere con voi.
-      </p>
-
-      <div class="countdown" role="timer" aria-label="Tempo rimanente al matrimonio">
-        <div class="count-item">
-          <span class="count-number" id="days">--</span>
-          <span class="count-label">Giorni</span>
-        </div>
-        <div class="count-item">
-          <span class="count-number" id="hours">--</span>
-          <span class="count-label">Ore</span>
-        </div>
-        <div class="count-item">
-          <span class="count-number" id="minutes">--</span>
-          <span class="count-label">Minuti</span>
-        </div>
-        <div class="count-item">
-          <span class="count-number" id="seconds">--</span>
-          <span class="count-label">Secondi</span>
-        </div>
-      </div>
-    </section>
+    <!-- CERIMONIA E RICEVIMENTO -->
 
     <section class="details-section" id="dettagli">
-      <div class="eyebrow">Il nostro giorno speciale</div>
-      <h2 class="section-title">Dove ci incontreremo</h2>
+
+      <div class="eyebrow">
+        Il nostro giorno speciale
+      </div>
+
+      <h2 class="section-title">
+        Dove ci incontreremo
+      </h2>
 
       <div class="details-grid">
+
         <article class="detail-card">
+
           <div class="symbol" aria-hidden="true">✧</div>
+
           <h3>La cerimonia</h3>
+
           <p>
             Cattedrale di Santa Maria Assunta<br>
             Duomo di Parma<br>
             Parma
           </p>
-          <a href="https://www.google.com/maps/search/?api=1&query=Duomo+di+Parma"
-             target="_blank" rel="noopener noreferrer">
+
+          <a href="https://www.google.com/maps/search/?api=1&amp;query=Duomo+di+Parma"
+             target="_blank"
+             rel="noopener noreferrer">
             Indicazioni stradali
           </a>
+
         </article>
 
         <article class="detail-card">
+
           <div class="symbol" aria-hidden="true">✧</div>
+
           <h3>Il ricevimento</h3>
+
           <p>
             Villa La Steccata<br>
             Traversetolo (PR)<br>
             Festeggeremo insieme!
           </p>
-          <a href="https://www.google.com/maps/search/?api=1&query=Villa+La+Steccata+Traversetolo"
-             target="_blank" rel="noopener noreferrer">
+
+          <a href="https://www.google.com/maps/search/?api=1&amp;query=Villa+La+Steccata+Traversetolo"
+             target="_blank"
+             rel="noopener noreferrer">
             Indicazioni stradali
           </a>
+
         </article>
+
       </div>
+
     </section>
 
+    <!-- MESSAGGIO FINALE -->
+
     <section class="closing">
-      <div class="eyebrow">Daniele &amp; Francesca</div>
-      <h2 class="section-title">Non vediamo l'ora!</h2>
+
+      <div class="eyebrow">
+        Daniele &amp; Francesca
+      </div>
+
+      <h2 class="section-title">
+        Non vediamo l'ora!
+      </h2>
+
       <p class="closing-message">
         La felicità è ancora più bella quando
         viene condivisa con le persone che amiamo.
       </p>
+
     </section>
+
   </main>
 
-  <footer>Daniele &amp; Francesca · 15.05.2027</footer>
+  <footer>
+    Daniele &amp; Francesca · 15.05.2027
+  </footer>
 
   <script>
-    // Data provvisoria di riferimento: mezzanotte italiana.
-    // Quando definiremo l'ora della cerimonia,
-    // aggiorneremo anche il conto alla rovescia.
+    // Il conto alla rovescia termina alla mezzanotte
+    // italiana del 15 maggio 2027.
+    // Aggiorneremo l'orario quando sarà definito.
+
     const weddingDate = new Date("2027-05-15T00:00:00+02:00");
 
     function updateCountdown() {
-      const remaining = Math.max(0, weddingDate.getTime() - Date.now());
+      const remaining = Math.max(
+        0,
+        weddingDate.getTime() - Date.now()
+      );
 
       const days = Math.floor(remaining / 86400000);
       const hours = Math.floor((remaining / 3600000) % 24);
@@ -394,5 +465,6 @@
     updateCountdown();
     setInterval(updateCountdown, 1000);
   </script>
+
 </body>
 </html>
