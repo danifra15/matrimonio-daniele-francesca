@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Amministrazione | Daniele & Francesca</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;600&family=Great+Vibes&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --gold: #aa8747;
+      --dark: #463b30;
+      --ivory: #faf7f0;
+      --line: #e7dcc7;
+      --muted: #857b6c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      background: var(--ivory);
+      color: var(--dark);
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    header {
+      text-align: center;
+      background: #fffdf8;
+      border-bottom: 1px solid var(--line);
+      padding: 23px 15px 18px;
+    }
+
+    .names {
+      font-family: 'Great Vibes', cursive;
+      font-size: 43px;
+      color: var(--gold);
+    }
+
+    .subtitle {
+      margin-top: 7px;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 18px 15px;
+      background: #fffdf8;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tab {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      border: 1px solid var(--line);
+      background: #f2ece1;
+      color: var(--dark);
+      padding: 13px 24px;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    .tab.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: white;
+    }
+
+    .tab:hover:not(.active) {
+      background: #e9deca;
+    }
+
+    .workspace {
+      width: 100%;
+      min-height: calc(100vh - 175px);
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: calc(100vh - 175px);
+      min-height: 650px;
+      border: 0;
+      background: var(--ivory);
+    }
+
+    iframe[hidden] {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .names {
+        font-size: 36px;
+      }
+
+      .tabs {
+        gap: 8px;
+        padding: 12px 10px;
+      }
+
+      .tab {
+        flex: 1;
+        padding: 12px 8px;
+        font-size: 12px;
+      }
+
+      iframe {
+        height: calc(100vh - 165px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="names">
+      Daniele & Francesca
+    </div>
+
+    <div class="subtitle">
+      Pannello amministrativo · 15 maggio 2027
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="Sezioni amministrative">
+
+    <button
+      id="tabInvitati"
+      class="tab active"
+      type="button"
+      aria-selected="true"
+    >
+      Invitati e RSVP
+    </button>
+
+    <button
+      id="tabFoto"
+      class="tab"
+      type="button"
+      aria-selected="false"
+    >
+      Foto e video
+    </button>
+
+  </nav>
+
+  <main class="workspace">
+
+    <iframe
+      id="frameInvitati"
+      src="invitati-admin.html"
+      title="Gestione invitati e RSVP"
+    ></iframe>
+
+    <iframe
+      id="frameFoto"
+      title="Gestione fotografie e video"
+      hidden
+    ></iframe>
+
+  </main>
+
+  <script>
+    const tabInvitati =
+      document.getElementById('tabInvitati');
+
+    const tabFoto =
+      document.getElementById('tabFoto');
+
+    const frameInvitati =
+      document.getElementById('frameInvitati');
+
+    const frameFoto =
+      document.getElementById('frameFoto');
+
+    function cambiaScheda(scheda) {
+
+      const mostraFoto = scheda === 'foto';
+
+      frameInvitati.hidden = mostraFoto;
+      frameFoto.hidden = !mostraFoto;
+
+      tabInvitati.classList.toggle(
+        'active',
+        !mostraFoto
+      );
+
+      tabFoto.classList.toggle(
+        'active',
+        mostraFoto
+      );
+
+      tabInvitati.setAttribute(
+        'aria-selected',
+        String(!mostraFoto)
+      );
+
+      tabFoto.setAttribute(
+        'aria-selected',
+        String(mostraFoto)
+      );
+
+      if (mostraFoto && !frameFoto.src) {
+        frameFoto.src = 'album-admin.html';
+      }
+    }
+
+    tabInvitati.addEventListener('click', () => {
+      cambiaScheda('invitati');
+    });
+
+    tabFoto.addEventListener('click', () => {
+      cambiaScheda('foto');
+    });
+  </script>
+
+</body>
+</html>
