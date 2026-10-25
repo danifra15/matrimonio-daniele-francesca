@@ -6,11 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#faf6ed">
   <meta name="description" content="Il matrimonio di Daniele e Francesca - 15 maggio 2027">
-  <title>Daniele & Francesca | 15 maggio 2027</title>
+  <title>Daniele &amp; Francesca | 15 maggio 2027</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -23,9 +24,13 @@
       --muted: #85796c;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       margin: 0;
@@ -33,6 +38,8 @@
       color: var(--ink);
       font-family: "DM Sans", sans-serif;
     }
+
+    /* HOMEPAGE */
 
     .hero {
       min-height: 100svh;
@@ -101,14 +108,18 @@
       line-height: 2;
     }
 
-    h1, h2, h3 {
+    h2, h3 {
       font-family: "Cormorant Garamond", serif;
       font-weight: 400;
     }
 
+    /* NOMI DEGLI SPOSI - GREAT VIBES */
+
     h1 {
-      font-size: clamp(62px, 12vw, 115px);
-      line-height: 0.94;
+      font-family: "Great Vibes", cursive;
+      font-weight: 400;
+      font-size: clamp(65px, 12vw, 115px);
+      line-height: 1.15;
       margin: 30px 0;
       overflow-wrap: anywhere;
     }
@@ -116,7 +127,7 @@
     h1 span {
       display: block;
       font-size: 0.55em;
-      font-style: italic;
+      font-style: normal;
       color: var(--gold);
       margin: 16px 0;
     }
@@ -134,6 +145,8 @@
       color: var(--gold-dark);
       margin: 0;
     }
+
+    /* CONTO ALLA ROVESCIA */
 
     .countdown {
       display: grid;
@@ -177,6 +190,8 @@
       letter-spacing: 2px;
       font-size: 11px;
     }
+
+    /* SEZIONI */
 
     section {
       padding: 95px 20px;
@@ -294,9 +309,18 @@
     }
 
     @keyframes appear {
-      from { opacity: 0; transform: translateY(18px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
+
+    /* VERSIONE CELLULARE */
 
     @media (max-width: 600px) {
       section {
@@ -325,6 +349,8 @@
 
       .invitation-content h1 {
         position: relative;
+        font-size: clamp(56px, 13vw, 80px);
+        line-height: 1.2;
       }
 
       .countdown {
@@ -367,7 +393,9 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
+      *,
+      *::before,
+      *::after {
         animation: none !important;
         scroll-behavior: auto !important;
       }
@@ -417,10 +445,11 @@
 
           <div class="date">15 maggio 2027</div>
 
-          <div class="countdown"
-               role="timer"
-               aria-label="Tempo rimanente al matrimonio">
-
+          <div
+            class="countdown"
+            role="timer"
+            aria-label="Tempo rimanente al matrimonio"
+          >
             <div class="count-item">
               <span class="count-number" id="days">--</span>
               <span class="count-label">Giorni</span>
@@ -440,7 +469,6 @@
               <span class="count-number" id="seconds">--</span>
               <span class="count-label">Secondi</span>
             </div>
-
           </div>
 
           <a class="scroll" href="#dettagli">
@@ -454,11 +482,15 @@
     <!-- CERIMONIA E RICEVIMENTO -->
 
     <section class="details-section" id="dettagli">
-      <h2 class="section-title">Dove ci incontreremo</h2>
+
+      <h2 class="section-title">
+        Dove ci incontreremo
+      </h2>
 
       <div class="details-grid">
 
         <article class="detail-card">
+
           <img
             class="location-photo"
             src="chiesa.png"
@@ -467,6 +499,7 @@
           >
 
           <div class="symbol" aria-hidden="true">✧</div>
+
           <h3>La cerimonia</h3>
 
           <p>
@@ -475,13 +508,18 @@
             Parma
           </p>
 
-          <a href="https://www.google.com/maps/search/?api=1&amp;query=Duomo+di+Parma"
-             target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://www.google.com/maps/search/?api=1&amp;query=Duomo+di+Parma"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Indicazioni stradali
           </a>
+
         </article>
 
         <article class="detail-card">
+
           <img
             class="location-photo"
             src="villa.png"
@@ -490,6 +528,7 @@
           >
 
           <div class="symbol" aria-hidden="true">✧</div>
+
           <h3>Il ricevimento</h3>
 
           <p>
@@ -498,10 +537,14 @@
             Festeggeremo insieme!
           </p>
 
-          <a href="https://www.google.com/maps/search/?api=1&amp;query=Villa+La+Steccata+Traversetolo"
-             target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://www.google.com/maps/search/?api=1&amp;query=Villa+La+Steccata+Traversetolo"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Indicazioni stradali
           </a>
+
         </article>
 
       </div>
@@ -528,19 +571,26 @@
       >
 
       <div class="closing-content">
-        <h2 class="section-title">Non vediamo l'ora!</h2>
+
+        <h2 class="section-title">
+          Non vediamo l'ora!
+        </h2>
 
         <p class="closing-message">
           La felicità è ancora più bella quando
           viene condivisa con le persone che amiamo.
         </p>
-      </div>
 
+      </div>
     </section>
 
   </main>
 
-  <footer>Daniele &amp; Francesca · 15.05.2027</footer>
+  <footer>
+    Daniele &amp; Francesca · 15.05.2027
+  </footer>
+
+  <!-- CONTO ALLA ROVESCIA -->
 
   <script>
     const weddingDate = new Date("2027-05-15T00:00:00+02:00");
@@ -557,10 +607,13 @@
       const seconds = Math.floor((remaining / 1000) % 60);
 
       document.getElementById("days").textContent = days;
+
       document.getElementById("hours").textContent =
         String(hours).padStart(2, "0");
+
       document.getElementById("minutes").textContent =
         String(minutes).padStart(2, "0");
+
       document.getElementById("seconds").textContent =
         String(seconds).padStart(2, "0");
     }
@@ -568,5 +621,6 @@
     updateCountdown();
     setInterval(updateCountdown, 1000);
   </script>
+
 </body>
 </html>
