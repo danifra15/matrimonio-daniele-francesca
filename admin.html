@@ -193,6 +193,39 @@
     const frameFoto =
       document.getElementById('frameFoto');
 
+    // Nasconde le intestazioni duplicate e
+    // il collegamento superfluo nel pannello foto.
+    function pulisciIntestazione(frame) {
+
+      frame.addEventListener('load', () => {
+
+        const doc = frame.contentDocument;
+
+        if (!doc) return;
+
+        const header = doc.querySelector('body > header');
+
+        if (header) {
+          header.style.display = 'none';
+        }
+
+        if (frame.id === 'frameFoto') {
+
+          const link = [...doc.querySelectorAll('a')]
+            .find(a =>
+              a.textContent.trim() === 'Torna al pannello'
+            );
+
+          if (link) {
+            link.style.display = 'none';
+          }
+        }
+      });
+    }
+
+    pulisciIntestazione(frameInvitati);
+    pulisciIntestazione(frameFoto);
+
     function cambiaScheda(scheda) {
 
       const mostraFoto = scheda === 'foto';
@@ -220,6 +253,8 @@
         String(mostraFoto)
       );
 
+      // Carica la gestione foto soltanto
+      // alla prima apertura della scheda.
       if (mostraFoto && !frameFoto.src) {
         frameFoto.src = 'album-admin.html?v=2';
       }
