@@ -10,7 +10,6 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
 
   <style>
@@ -24,13 +23,9 @@
       --muted: #85796c;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -38,8 +33,6 @@
       color: var(--ink);
       font-family: "DM Sans", sans-serif;
     }
-
-    /* HOMEPAGE */
 
     .hero {
       min-height: 100svh;
@@ -65,8 +58,6 @@
       box-shadow: 0 18px 60px rgba(87, 66, 37, 0.06);
       animation: appear 1.1s ease both;
     }
-
-    /* DECORAZIONI FLOREALI */
 
     .floral-decoration {
       position: absolute;
@@ -113,7 +104,7 @@
       font-weight: 400;
     }
 
-    /* NOMI DEGLI SPOSI - GREAT VIBES */
+    /* NOMI DEGLI SPOSI */
 
     h1 {
       font-family: "Great Vibes", cursive;
@@ -191,8 +182,6 @@
       font-size: 11px;
     }
 
-    /* SEZIONI */
-
     section {
       padding: 95px 20px;
       text-align: center;
@@ -250,6 +239,16 @@
       font-size: 14px;
     }
 
+    /* ORARIO CERIMONIA */
+
+    .ceremony-time {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 29px;
+      font-weight: 600;
+      color: var(--gold-dark);
+      margin: 10px 0 0;
+    }
+
     .detail-card a {
       display: inline-block;
       margin-top: 15px;
@@ -261,8 +260,6 @@
       letter-spacing: 1px;
       text-transform: uppercase;
     }
-
-    /* SEZIONE FINALE */
 
     .closing {
       position: relative;
@@ -313,19 +310,14 @@
         opacity: 0;
         transform: translateY(18px);
       }
-
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
 
-    /* VERSIONE CELLULARE */
-
     @media (max-width: 600px) {
-      section {
-        padding: 75px 20px;
-      }
+      section { padding: 75px 20px; }
 
       .details-grid {
         grid-template-columns: 1fr;
@@ -353,22 +345,10 @@
         line-height: 1.2;
       }
 
-      .countdown {
-        gap: 5px;
-      }
-
-      .count-item {
-        padding: 14px 2px;
-      }
-
-      .count-label {
-        font-size: 9px;
-        letter-spacing: 0;
-      }
-
-      .detail-card {
-        padding: 12px 12px 35px;
-      }
+      .countdown { gap: 5px; }
+      .count-item { padding: 14px 2px; }
+      .count-label { font-size: 9px; letter-spacing: 0; }
+      .detail-card { padding: 12px 12px 35px; }
 
       .closing {
         min-height: 400px;
@@ -508,6 +488,10 @@
             Parma
           </p>
 
+          <div class="ceremony-time">
+            Ore 16:00
+          </div>
+
           <a
             href="https://www.google.com/maps/search/?api=1&amp;query=Duomo+di+Parma"
             target="_blank"
@@ -590,10 +574,10 @@
     Daniele &amp; Francesca · 15.05.2027
   </footer>
 
-  <!-- CONTO ALLA ROVESCIA -->
+  <!-- CONTO ALLA ROVESCIA FINO ALLE ORE 16:00 -->
 
   <script>
-    const weddingDate = new Date("2027-05-15T00:00:00+02:00");
+    const weddingDate = new Date("2027-05-15T16:00:00+02:00");
 
     function updateCountdown() {
       const remaining = Math.max(
@@ -607,13 +591,10 @@
       const seconds = Math.floor((remaining / 1000) % 60);
 
       document.getElementById("days").textContent = days;
-
       document.getElementById("hours").textContent =
         String(hours).padStart(2, "0");
-
       document.getElementById("minutes").textContent =
         String(minutes).padStart(2, "0");
-
       document.getElementById("seconds").textContent =
         String(seconds).padStart(2, "0");
     }
