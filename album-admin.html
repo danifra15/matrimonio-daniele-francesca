@@ -14,44 +14,39 @@
   --ink:#463b30;
   --line:#e7dcc7;
 }
-
 * {box-sizing:border-box}
-
 body {
   margin:0;
   background:#faf7f0;
   color:var(--ink);
   font-family:'DM Sans',sans-serif;
 }
-
 header {
   text-align:center;
   padding:32px 15px;
   background:#fffdf8;
   border-bottom:1px solid var(--line);
 }
-
 header strong {
   font:45px 'Great Vibes',cursive;
   color:var(--gold);
 }
-
 header p {
   font-size:11px;
   letter-spacing:2px;
   text-transform:uppercase;
 }
-
 main {
   max-width:1120px;
   margin:30px auto;
   padding:0 18px 50px;
 }
-
 h1 {
   font:600 38px 'Cormorant Garamond',serif;
 }
-
+h2 {
+  font:600 28px 'Cormorant Garamond',serif;
+}
 button,.link {
   border:0;
   border-radius:8px;
@@ -63,21 +58,15 @@ button,.link {
   text-decoration:none;
   display:inline-block;
 }
-
 button:disabled {
   opacity:.5;
   cursor:wait;
 }
-
 .secondary {
   background:#eee6d9;
   color:var(--ink);
 }
-
-.danger {
-  background:#a24b48;
-}
-
+.danger {background:#a24b48}
 .panel {
   background:white;
   border:1px solid var(--line);
@@ -85,7 +74,6 @@ button:disabled {
   padding:22px;
   margin:20px 0;
 }
-
 .row {
   display:flex;
   gap:10px;
@@ -93,7 +81,6 @@ button:disabled {
   justify-content:space-between;
   flex-wrap:wrap;
 }
-
 input[type=email],
 input[type=password] {
   width:100%;
@@ -103,24 +90,16 @@ input[type=password] {
   border-radius:8px;
   font:inherit;
 }
-
-label {
-  font-size:13px;
-}
-
+label {font-size:13px}
 .muted {
   color:#857b6c;
   font-size:13px;
 }
-
 .grid {
   display:grid;
-  grid-template-columns:repeat(
-    auto-fill,minmax(210px,1fr)
-  );
+  grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
   gap:15px;
 }
-
 .card {
   background:white;
   border:1px solid var(--line);
@@ -128,12 +107,10 @@ label {
   overflow:hidden;
   position:relative;
 }
-
 .card.selected {
   outline:3px solid var(--gold);
   outline-offset:-3px;
 }
-
 .preview {
   height:175px;
   background:#f2ece1;
@@ -141,48 +118,31 @@ label {
   place-items:center;
   overflow:hidden;
 }
-
 .preview img,
 .preview video {
   width:100%;
   height:100%;
   object-fit:contain;
 }
-
-.preview video {
-  background:#171717;
-}
-
-.body {
-  padding:14px;
-}
-
+.preview video {background:#171717}
+.body {padding:14px}
 .name {
   font-size:13px;
   font-weight:600;
   overflow-wrap:anywhere;
 }
-
 .actions {
   display:flex;
   gap:8px;
   margin-top:12px;
   flex-wrap:wrap;
 }
-
-.actions button {
-  padding:9px;
-}
-
-.hidden {
-  display:none!important;
-}
-
+.actions button {padding:9px}
+.hidden {display:none!important}
 #notice {
   min-height:20px;
   color:#a24b48;
 }
-
 .selection-bar {
   display:flex;
   align-items:center;
@@ -194,13 +154,11 @@ label {
   border-radius:12px;
   margin:15px 0;
 }
-
 .selection-count {
   font-size:13px;
   font-weight:600;
   margin-right:auto;
 }
-
 .select-box {
   position:absolute;
   top:10px;
@@ -216,14 +174,12 @@ label {
   box-shadow:0 2px 8px #0002;
   cursor:pointer;
 }
-
 .select-box input {
   width:21px;
   height:21px;
   accent-color:var(--gold);
   cursor:pointer;
 }
-
 #progressPanel {
   background:white;
   border:1px solid var(--line);
@@ -231,21 +187,65 @@ label {
   padding:18px;
   margin:15px 0;
 }
-
 progress {
   width:100%;
   height:18px;
   accent-color:var(--gold);
 }
-
 #progressText {
   font-size:13px;
   margin:10px 0;
 }
 
+/* MONITORAGGIO SPAZIO ALBUM */
+.storage-heading {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.storage-heading h2 {margin:0}
+.storage-track {
+  height:14px;
+  background:#eee6d9;
+  border-radius:99px;
+  overflow:hidden;
+  margin:16px 0 12px;
+}
+.storage-fill {
+  height:100%;
+  width:0;
+  background:var(--gold);
+  border-radius:99px;
+  transition:width .3s;
+}
+.storage-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin-top:16px;
+}
+.storage-stat {
+  background:#faf7f0;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:14px;
+}
+.storage-stat strong {
+  display:block;
+  font-size:20px;
+  margin:7px 0 4px;
+  overflow-wrap:anywhere;
+}
+.storage-note {
+  margin:16px 0 0;
+  line-height:1.6;
+}
 @media(max-width:600px) {
   h1 {font-size:30px}
   .selection-bar button {flex:1}
+  .storage-grid {grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -279,22 +279,14 @@ progress {
     <form id="form">
       <label>
         Email
-        <input
-          id="email"
-          type="email"
-          required
-          autocomplete="username"
-        >
+        <input id="email" type="email" required
+               autocomplete="username">
       </label>
 
       <label>
         Password
-        <input
-          id="password"
-          type="password"
-          required
-          autocomplete="current-password"
-        >
+        <input id="password" type="password" required
+               autocomplete="current-password">
       </label>
 
       <button>Accedi</button>
@@ -306,7 +298,6 @@ progress {
     <div class="panel row">
       <div>
         <b id="count">0 file</b>
-
         <p class="muted">
           Fotografie e video originali.
           I link di download sono temporanei.
@@ -315,6 +306,61 @@ progress {
 
       <button id="refresh">Aggiorna</button>
     </div>
+
+    <!-- SPAZIO ALBUM -->
+    <section class="panel" aria-label="Spazio album">
+
+      <div class="storage-heading">
+        <h2>Spazio album</h2>
+        <span class="muted" id="storageStatus"
+              role="status">
+          Calcolo in corso…
+        </span>
+      </div>
+
+      <div class="storage-track"
+           aria-label="Indicatore spazio album">
+        <div class="storage-fill"
+             id="storageFill"></div>
+      </div>
+
+      <div class="storage-grid">
+
+        <div class="storage-stat">
+          <span class="muted">Totale occupato</span>
+          <strong id="storageTotal">—</strong>
+          <span class="muted" id="storageFiles">
+            In attesa dei dati
+          </span>
+        </div>
+
+        <div class="storage-stat">
+          <span class="muted">File originali</span>
+          <strong id="storageOriginals">—</strong>
+          <span class="muted" id="storageOriginalCount">
+            —
+          </span>
+        </div>
+
+        <div class="storage-stat">
+          <span class="muted">Anteprime</span>
+          <strong id="storagePreviews">—</strong>
+          <span class="muted" id="storagePreviewCount">
+            —
+          </span>
+        </div>
+
+      </div>
+
+      <p class="muted storage-note" id="storageNote">
+        Questi valori comprendono soltanto i file
+        conservati nell'album del matrimonio.
+        La percentuale rispetto al piano Supabase
+        sarà disponibile dopo il collegamento
+        automatico del limite Free/Pro.
+      </p>
+
+    </section>
 
     <div class="selection-bar">
 
@@ -344,7 +390,8 @@ progress {
         Preparazione...
       </p>
 
-      <progress id="progressBar" value="0" max="100">
+      <progress id="progressBar"
+                value="0" max="100">
       </progress>
 
       <p class="muted">
@@ -473,7 +520,80 @@ function setBusy(busy) {
 }
 
 function formatBytes(bytes) {
-  return (bytes/1048576).toFixed(2)+' MB';
+  const n=Number(bytes)||0;
+
+  if(n>=1073741824) {
+    return (n/1073741824).toFixed(2)+' GB';
+  }
+
+  return (n/1048576).toFixed(2)+' MB';
+}
+
+/* LETTURA SPAZIO STORAGE */
+
+async function loadStorage() {
+
+  $('storageStatus').textContent='Aggiornamento…';
+
+  try {
+
+    const {stats}=await call('storage-stats');
+
+    if(!Array.isArray(stats)) {
+      throw Error('Dati di archiviazione non validi.');
+    }
+
+    const original=stats.find(
+      s=>s.bucket==='wedding-originals'
+    )||{bytes:0,count:0};
+
+    const previews=stats.find(
+      s=>s.bucket==='wedding-previews'
+    )||{bytes:0,count:0};
+
+    const originalBytes=Number(original.bytes)||0;
+    const previewBytes=Number(previews.bytes)||0;
+
+    const originalCount=Number(original.count)||0;
+    const previewCount=Number(previews.count)||0;
+
+    const total=originalBytes+previewBytes;
+
+    $('storageTotal').textContent=
+      formatBytes(total);
+
+    $('storageOriginals').textContent=
+      formatBytes(originalBytes);
+
+    $('storagePreviews').textContent=
+      formatBytes(previewBytes);
+
+    $('storageOriginalCount').textContent=
+      originalCount+' file';
+
+    $('storagePreviewCount').textContent=
+      previewCount+' file';
+
+    $('storageFiles').textContent=
+      (originalCount+previewCount)+
+      ' oggetti archiviati';
+
+    $('storageStatus').textContent='Aggiornato';
+
+    // La percentuale verrà attivata quando
+    // il limite del piano sarà disponibile.
+    $('storageFill').style.width='0%';
+
+  }catch(e) {
+
+    $('storageStatus').textContent=
+      'Dati non disponibili';
+
+    $('storageNote').textContent=
+      'Impossibile leggere lo spazio occupato: '+
+      e.message+
+      '. La gestione dell’album rimane disponibile.';
+  }
 }
 
 async function load() {
@@ -481,6 +601,10 @@ async function load() {
   if(downloading)return;
 
   say('');
+
+  // Il monitoraggio è indipendente dalla galleria:
+  // un suo errore non deve bloccare gli altri servizi.
+  loadStorage();
 
   try {
 
