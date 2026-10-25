@@ -564,7 +564,7 @@ function render(){
 
     ops.append(btn('Copia link',async()=>{
       const link=SITE+'?invito='+
-        encodeURIComponent(group.invitation_token)+'#rsvp';
+        encodeURIComponent(group.invitation_token);
 
       try{
         await navigator.clipboard.writeText(link);
@@ -864,7 +864,7 @@ function downloadPng(dataUrl,name){
 
 function showQr(group){
   const link=SITE+'?invito='+
-    encodeURIComponent(group.invitation_token)+'#rsvp';
+    encodeURIComponent(group.invitation_token);
 
   const w=window.open('','_blank','width=480,height=650');
 
