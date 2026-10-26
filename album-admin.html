@@ -537,7 +537,7 @@ async function loadStorage() {
 
   try {
 
-    const {stats}=await call('storage-stats');
+    const {stats,plan,quota_bytes,plan_error}=   await call('storage-stats');
 
     if(!Array.isArray(stats)) {
       throw Error('Dati di archiviazione non validi.');
@@ -580,9 +580,27 @@ async function loadStorage() {
 
     $('storageStatus').textContent='Aggiornato';
 
-    // La percentuale verrà attivata quando
-    // il limite del piano sarà disponibile.
-    $('storageFill').style.width='0%';
+  if(Number(quota_bytes)>0) {
+  const percent=(total/Number(quota_bytes))*100;
+
+  $('storageFill').style.width=
+    Math.min(percent,100)+'%';
+
+  $('storageStatus').textContent=
+    'Piano '+plan+' · '+percent.toFixed(2)+'% utilizzato';
+
+  $('storageNote').textContent=
+    'Spazio album: '+formatBytes(total)+
+    ' su '+formatBytes(quota_bytes)+
+    ' inclusi nel piano '+plan+
+    '. La quota è condivisa con gli altri file dell’organizzazione.';
+} else {
+  $('storageFill').style.width='0%';
+  $('storageStatus').textContent='Piano non disponibile';
+  $('storageNote').textContent=
+    'Impossibile rilevare il piano: '+
+    (plan_error||'risposta non riconosciuta');
+}
 
   }catch(e) {
 
